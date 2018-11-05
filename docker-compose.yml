@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+    db:
+        image: postgres:11.0
+
+    php:
+        build: docker/php
+
+    nginx:
+        build: docker/nginx

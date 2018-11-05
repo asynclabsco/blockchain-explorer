@@ -16,3 +16,5 @@
 ###< symfony/web-server-bundle ###
 
 .idea/
+docker-compose.override.yml
+docker/logs

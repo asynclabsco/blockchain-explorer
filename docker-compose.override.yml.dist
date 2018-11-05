@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+    db:
+        volumes:
+            - ./docker/data/db:/var/lib/postgresql/data
+        ports:
+            - 5432:5432
+
+    php:
+        volumes:
+            - ./docker/logs/symfony:/var/www/symfony/app/logs
+            - .:/var/www/symfony:cached
+
+    nginx:
+        ports:
+            - 80:80
+            - 443:443
+        volumes:
+            - ./docker/logs/nginx/:/var/log/nginx:cached
+            - .:/var/www/symfony:cached
