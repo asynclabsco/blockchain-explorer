@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Block;
 use App\Parser\NodeRequestBuilder;
 use App\Repository\BlockRepository;
 use Datto\JsonRpc\Client as JsonRpcClient;
@@ -32,17 +33,23 @@ class FetchLatestBlockFromBlockchainService
         $this->jsonRpcClient = new JsonRpcClient;
     }
 
-
     public function fetchBlock()
     {
         $blockNumberHex = $this->getLatestBlockNumber();
 
         $rawBlocksArray = $this->getRawBlockData($blockNumberHex);
 
+        $newBlocksCount = 0;
         /** @var array $rawBlock */
         foreach ($rawBlocksArray as $rawBlock) {
-            $this->blockParser->parseRawBlock($rawBlock);
+            $newBlock = $this->blockParser->parseRawBlock($rawBlock);
+
+            if ($newBlock instanceof Block) {
+                $newBlocksCount++;
+            }
         }
+
+        return $newBlocksCount;
     }
 
     private function getLatestBlockNumber()

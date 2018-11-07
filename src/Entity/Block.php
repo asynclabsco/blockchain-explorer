@@ -46,19 +46,19 @@ class Block
 
     /**
      * @var integer
-     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Column(type="string", nullable=false)
      */
     private $gasUsed;
 
     /**
      * @var int
-     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Column(type="string", nullable=false)
      */
     private $gasLimit;
 
     /**
      * @var int
-     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Column(type="string", nullable=false)
      */
     private $size;
 
@@ -168,5 +168,10 @@ class Block
         }
 
         $this->timestamp = DateTime::createFromFormat('U', $timestamp);
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 }

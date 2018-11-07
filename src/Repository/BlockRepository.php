@@ -40,4 +40,15 @@ class BlockRepository
     {
         return $this->repository->findOneBy(['blockHash' => $blockHash]);
     }
+
+    public function getLatestBlocks(int $limit = 10)
+    {
+        $qb = $this->repository->createQueryBuilder('b');
+
+        $qb->orderBy('b.id', 'DESC');
+
+        $qb->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
 }

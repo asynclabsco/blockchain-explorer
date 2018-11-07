@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block content %}
-
+{% block body %}
+    {% include 'block/list-blocks.html.twig' with {blocks: latestBlocks} only %}
+    {% include 'transaction/list-transactions.html.twig' with {transactions: latestTransactions} only %}
 {% endblock %}

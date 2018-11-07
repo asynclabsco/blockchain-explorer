@@ -25,4 +25,18 @@ class TransactionRepository
         $this->em->persist($transaction);
         $this->em->flush();
     }
+
+    public function getLatestTransactions(int $limit = 10)
+    {
+        $qb = $this->repository->createQueryBuilder('t');
+
+        $qb->join('t.block', 'b');
+
+        $qb->orderBy('b.id', 'DESC');
+        $qb->orderBy('t.index', 'ASC');
+
+        $qb->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
 }
