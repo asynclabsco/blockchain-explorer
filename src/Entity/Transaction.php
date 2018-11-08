@@ -25,20 +25,6 @@ class Transaction
     private $block;
 
     /**
-     * @var Address
-     * @ORM\ManyToOne(targetEntity="App\Entity\Address", cascade={"persist"})
-     * @ORM\JoinColumn(referencedColumnName="address")
-     */
-    private $from;
-
-    /**
-     * @var Address
-     * @ORM\ManyToOne(targetEntity="App\Entity\Address", cascade={"persist"})
-     * @ORM\JoinColumn(referencedColumnName="address")
-     */
-    private $to;
-
-    /**
      * @var int
      * @ORM\Column(type="bigint", nullable=false)
      */
@@ -51,10 +37,32 @@ class Transaction
     private $gasPrice;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", nullable=false)
+     */
+    private $data;
+
+
+    /**
      * @var int
      * @ORM\Column(type="bigint", nullable=false)
      */
     private $nonce;
+
+    /**
+     * @var Address
+     * @ORM\ManyToOne(targetEntity="App\Entity\Address", cascade={"persist"})
+     * @ORM\JoinColumn(referencedColumnName="address")
+     */
+    private $to;
+
+    /**
+     * @var Address
+     * @ORM\ManyToOne(targetEntity="App\Entity\Address", cascade={"persist"})
+     * @ORM\JoinColumn(referencedColumnName="address")
+     */
+    private $from;
+
 
     /**
      * This is ETH sent with transaction
@@ -62,12 +70,6 @@ class Transaction
      * @ORM\Column(type="string", nullable=false)
      */
     private $value;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", nullable=false)
-     */
-    private $data;
 
     /**
      * @var integer

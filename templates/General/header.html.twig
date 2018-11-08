@@ -1,10 +1,14 @@
 <div class="c-header">
     <div class="c-header__branding">
         <div class="c-header__logo">
-            <img src="{{ asset('images/logo250x250.png') }}" alt="{{ title }}">
+            <a href="{{ path('be.landing_page') }}">
+                <img src="{{ asset('images/logo250x250.png') }}" alt="{{ title }}">
+            </a>
         </div>
         <div class="c-header__title">
-            {{ title }}
+            <a href="{{ path('be.landing_page') }}">
+                {{ title }}
+            </a>
         </div>
     </div>
     <div class="c-header__navigation">
@@ -12,10 +16,10 @@
             <a href="{{ path('be.landing_page') }}">Home</a>
         </div>
         <div class="c-header__navigation-item">
-            <a href="#TODO">Blocks</a>
+            <a href="{{ path('be.block.get_all_blocks') }}">Blocks</a>
         </div>
         <div class="c-header__navigation-item">
-            <a href="#TODO">Transactions</a>
+            <a href="{{ path('be.transaction.show_all_transactions') }}">Transactions</a>
         </div>
     </div>
 </div>

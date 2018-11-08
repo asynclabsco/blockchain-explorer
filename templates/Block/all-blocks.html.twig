@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="c-all-blocks-page">
+        <h1>All Blocks</h1>
+
+        <div class="c-all-blocks-page__blocks">
+            {% include 'Block/list-blocks.html.twig' with {blocks: blocks} only %}
+
+            <div class="c-all-blocks-page__blocks-pagination">
+                {{ knp_pagination_render(blocks) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

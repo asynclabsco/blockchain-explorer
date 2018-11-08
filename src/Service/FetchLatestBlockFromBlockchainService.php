@@ -57,7 +57,7 @@ class FetchLatestBlockFromBlockchainService
         $latestBlock = $this->blockRepository->findLatestBlock();
 
         if (is_null($latestBlock)) {
-            return '0x0';
+            return 0;
         }
 
         $latestBlockNumberDec = NumberBaseConverter::toDec($latestBlock->getBlockNumber());

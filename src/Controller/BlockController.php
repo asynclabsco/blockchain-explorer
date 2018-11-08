@@ -58,8 +58,25 @@ class BlockController
         );
 
         $body = $this->twig->render('Block/show-block.html.twig', [
-            'block'      => $block,
+            'block'        => $block,
             'transactions' => $transactions,
+        ]);
+
+        return new Response($body);
+    }
+
+    /**
+     * @Route("/blocks", name="be.block.get_all_blocks")
+     */
+    public function getAllBlocks(Request $request)
+    {
+        $page = $request->query->getInt('page', 1);
+
+        $blocksQb = $this->blockRepository->findAllBlocksQb();
+        $blocks = $this->paginator->paginate($blocksQb, $page, 10);
+
+        $body = $this->twig->render('Block/all-blocks.html.twig', [
+            'blocks' => $blocks,
         ]);
 
         return new Response($body);

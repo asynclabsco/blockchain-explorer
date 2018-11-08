@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="c-all-transactions-page">
+        <h1>Transactions</h1>
+
+        <div class="c-all-transactions-page__transactions">
+            {% include 'Transaction/list-transactions.html.twig' with {transactions: transactions} only %}
+
+            <div class="c-all-transactions-page__transactions-navigation">
+                {{ knp_pagination_render(transactions) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

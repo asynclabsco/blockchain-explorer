@@ -62,4 +62,13 @@ class BlockRepository
 
         return $qb->getQuery()->getSingleResult();
     }
+
+    public function findAllBlocksQb()
+    {
+        $qb = $this->repository->createQueryBuilder('b');
+
+        $qb->orderBy('b.id', 'DESC');
+
+        return $qb;
+    }
 }

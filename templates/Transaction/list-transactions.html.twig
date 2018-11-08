@@ -4,7 +4,9 @@
         <div class="c-transactions__list-item">
             <div class="c-transaction">
                 <div class="c-transaction__hash">
-                    {{ transaction.txHash }}
+                    <a href="{{ path('be.transaction.show_transaction', {id: transaction.txHash}) }}">
+                        {{ transaction.txHash }}
+                    </a>
                 </div>
                 <div class="c-transaction__block">
                     <a href="{{ path('be.block.show_block', {blockHashOrNumber: transaction.block.blockNumber}) }}">
@@ -20,7 +22,7 @@
                 <div class="c-transaction__to">
                     To:
                     <a href="{{ path('be.address.show_address', {address: transaction.to.address}) }}">
-                        {{ transaction.to.address}}
+                        {{ transaction.to.address }}
                     </a>
                 </div>
                 <div class="c-transaction__value">
@@ -29,4 +31,8 @@
             </div>
         </div>
     {% endfor %}
+
+    {% if transactions|length == 0 %}
+        There are no transactions.
+    {% endif %}
 </div>

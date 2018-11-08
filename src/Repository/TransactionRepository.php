@@ -72,4 +72,21 @@ class TransactionRepository
 
         return $qb;
     }
+
+    public function find($id)
+    {
+        return $this->repository->find($id);
+    }
+
+    public function findAllTransactionsQb()
+    {
+        $qb = $this->repository->createQueryBuilder('t');
+
+        $qb->join('t.block', 'b');
+
+        $qb->orderBy('b.id', 'DESC');
+        $qb->addOrderBy('t.index', 'DESC');
+
+        return $qb;
+    }
 }
