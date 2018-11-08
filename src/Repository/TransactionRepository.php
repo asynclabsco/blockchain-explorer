@@ -2,9 +2,12 @@
 
 namespace App\Repository;
 
+use App\Entity\Address;
+use App\Entity\Block;
 use App\Entity\Transaction;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 class TransactionRepository
 {
@@ -33,10 +36,40 @@ class TransactionRepository
         $qb->join('t.block', 'b');
 
         $qb->orderBy('b.id', 'DESC');
-        $qb->orderBy('t.index', 'ASC');
+        $qb->addOrderBy('t.index', 'DESC');
 
         $qb->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function findTransactionsByBlockQb(Block $block): QueryBuilder
+    {
+        $qb = $this->repository->createQueryBuilder('t');
+
+        $qb->join('t.block', 'b');
+
+        $qb->where('b = :block');
+        $qb->setParameter('block', $block);
+
+        $qb->orderBy('b.id', 'DESC');
+        $qb->addOrderBy('t.index', 'DESC');
+
+        return $qb;
+    }
+
+    public function findTransactionsByAddress(Address $address): QueryBuilder
+    {
+        $qb = $this->repository->createQueryBuilder('t');
+
+        $qb->join('t.block', 'b');
+
+        $qb->andWhere('t.from = :address OR t.to = :address');
+        $qb->setParameter('address', $address);
+
+        $qb->orderBy('b.id', 'DESC');
+        $qb->addOrderBy('t.index', 'DESC');
+
+        return $qb;
     }
 }

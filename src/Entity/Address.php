@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Address
 {
+    const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
+
     /**
      * @var string
      * @ORM\Id()
@@ -45,5 +47,10 @@ class Address
     public function setEthereumBalance(float $ethereumBalance)
     {
         $this->ethereumBalance = $ethereumBalance;
+    }
+
+    public function isNullAddress(): bool
+    {
+        return $this->address === self::NULL_ADDRESS;
     }
 }

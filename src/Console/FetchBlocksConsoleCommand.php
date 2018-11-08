@@ -29,7 +29,11 @@ class FetchBlocksConsoleCommand extends Command
     {
         $output->writeln('Started fetching blocks');
 
-        $this->fetchLatestBlockFromBlockchainService->fetchBlock();
+        while (true) {
+            $numberOfNewBlocks = $this->fetchLatestBlockFromBlockchainService->fetchBlock();
+
+            $output->writeln("Got {$numberOfNewBlocks} new blocks.");
+        }
 
         $output->writeln('Finished fetching blocks');
     }

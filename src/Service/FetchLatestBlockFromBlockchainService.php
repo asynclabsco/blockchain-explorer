@@ -35,9 +35,9 @@ class FetchLatestBlockFromBlockchainService
 
     public function fetchBlock()
     {
-        $blockNumberHex = $this->getLatestBlockNumber();
+        $blockNumberDec = $this->getLatestBlockNumber();
 
-        $rawBlocksArray = $this->getRawBlockData($blockNumberHex);
+        $rawBlocksArray = $this->getRawBlocksData($blockNumberDec);
 
         $newBlocksCount = 0;
         /** @var array $rawBlock */
@@ -62,14 +62,17 @@ class FetchLatestBlockFromBlockchainService
 
         $latestBlockNumberDec = NumberBaseConverter::toDec($latestBlock->getBlockNumber());
 
-        return NumberBaseConverter::toHex($latestBlockNumberDec + 1);
+        return $latestBlockNumberDec;
     }
 
-    private function getRawBlockData(string $blockNumberHex)
+    private function getRawBlocksData($blockNumberDec)
     {
         $rawBlocksArray = [];
 
-        $this->jsonRpcClient->query(1, 'eth_getBlockByNumber', [$blockNumberHex, true]);
+        for ($i = 1; $i <= 50; $i++) {
+            $this->jsonRpcClient->query($i, 'eth_getBlockByNumber',
+                [NumberBaseConverter::toHex($blockNumberDec + $i), true]);
+        }
         $message = $this->jsonRpcClient->encode();
 
         $responseArray = $this->nodeRequestBuilder->executeSingleRequest($message);

@@ -1,0 +1,26 @@
+<div class="c-blocks__list">
+    <h2>Blocks</h2>
+    {% for block in blocks %}
+        <div class="c-blocks__list-item">
+            <div class="c-block">
+                <div class="c-block__number">
+                    <a href="{{ path('be.block.show_block', {blockHashOrNumber: block.blockNumber}) }}">
+                        Block {{ '#' ~ block.id }}
+                    </a>
+                </div>
+                <div class="c-block__number-of-transactions">
+                    {{ block.numberOfTransactions }} txns
+                </div>
+                <div class="c-block__size">
+                    {{ block.size }} bytes
+                </div>
+                <div class="c-block__hash">
+                    {{ block.blockHash }}
+                </div>
+                <div class="c-block__parent-hash">
+                    {{ block.parentBlockHash }}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

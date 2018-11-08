@@ -51,4 +51,15 @@ class BlockRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findByBlockNumberOrBlockHash($blockHashOrNumber): ?Block
+    {
+        $qb = $this->repository->createQueryBuilder('b');
+
+        $qb->where('b.blockNumber = :blockHashOrNumber OR b.blockHash = :blockHashOrNumber');
+
+        $qb->setParameter('blockHashOrNumber', $blockHashOrNumber);
+
+        return $qb->getQuery()->getSingleResult();
+    }
 }

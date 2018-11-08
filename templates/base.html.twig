@@ -1,12 +1,22 @@
+{% set title = 'Ethereum Blockchain Explorer' %}
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Ethereum Blockchain Explorer!{% endblock %}</title>
+        <title>{{ title }} {% block title %}{% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="{{ asset('dist/main.css') }}">
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <div class="c-container">
+            {% include 'General/header.html.twig' %}
+
+            {% block body %}{% endblock %}
+
+            {% include 'General/footer.html.twig' %}
+        </div>
+        <script src="{{ asset('dist/main.js') }}"></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

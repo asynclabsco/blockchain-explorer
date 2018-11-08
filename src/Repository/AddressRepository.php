@@ -37,4 +37,9 @@ class AddressRepository
         $this->em->persist($address);
         $this->em->flush();
     }
+
+    public function find($address): ?Address
+    {
+        return $this->repository->find($address);
+    }
 }

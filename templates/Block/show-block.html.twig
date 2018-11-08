@@ -1,0 +1,132 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="c-block-page">
+        <h1>{{ 'Block #' ~ block.id }}</h1>
+        <div class="c-block-page__info">
+            <div class="c-block-page__info-item">
+                <div class="c-block-page__info-item-label">
+                    Height
+                </div>
+                <div class="c-block-page__info-item-value">
+                    {{ block.id }}
+                </div>
+            </div>
+            <div class="c-block-page__info-item">
+                <div class="c-block-page__info-item-label">
+                    Timestamp
+                </div>
+                <div class="c-block-page__info-item-value">
+                    {{ block.timestamp|date }}
+                </div>
+            </div>
+            <div class="c-block-page__info-item">
+                <div class="c-block-page__info-item-label">
+                    Transactions
+                </div>
+                <div class="c-block-page__info-item-value">
+                    {# TODO link #}
+                    {{ block.numberOfTransactions ~ ' txns' }}
+                </div>
+            </div>
+            <div class="c-block-page__info-item">
+                <div class="c-block-page__info-item-label">
+                    Hash
+                </div>
+                <div class="c-block-page__info-item-value">
+                    {{ block.blockHash }}
+                </div>
+            </div>
+            <div class="c-block-page__info-item">
+                <div class="c-block-page__info-item-label">
+                    Parent hash
+                </div>
+                <div class="c-block-page__info-item-value">
+                    {{ block.parentBlockHash }}
+                </div>
+            </div>
+            <div class="c-block-page__info-item">
+                <div class="c-block-page__info-item-label">
+                    Sha3Uncles
+                </div>
+                <div class="c-block-page__info-item-value">
+                    {{ block.sha3Uncles }}
+                </div>
+            </div>
+            <div class="c-block-page__info-item">
+                <div class="c-block-page__info-item-label">
+                    Miner
+                </div>
+                <div class="c-block-page__info-item-value">
+                    <a href="{{ path('be.address.show_address',  {address: block.miner.address}) }}">
+                        {{ block.miner.address }}
+                    </a>
+                </div>
+            </div>
+            <div class="c-block-page__info-item">
+                <div class="c-block-page__info-item-label">
+                    Difficulty
+                </div>
+                <div class="c-block-page__info-item-value">
+                    {{ block.difficulty }}
+                </div>
+            </div>
+            <div class="c-block-page__info-item">
+                <div class="c-block-page__info-item-label">
+                    Total difficulty
+                </div>
+                <div class="c-block-page__info-item-value">
+                    {{ block.totalDifficulty }}
+                </div>
+            </div>
+            <div class="c-block-page__info-item">
+                <div class="c-block-page__info-item-label">
+                    Size
+                </div>
+                <div class="c-block-page__info-item-value">
+                    {{ block.size ~ ' bytes' }}
+                </div>
+            </div>
+            <div class="c-block-page__info-item">
+                <div class="c-block-page__info-item-label">
+                    Gas Used
+                </div>
+                <div class="c-block-page__info-item-value">
+                    {{ block.gasUsed }} ({{ block.gasUsedPercentage|number_format(2, '.') ~ '%' }})
+                </div>
+            </div>
+            <div class="c-block-page__info-item">
+                <div class="c-block-page__info-item-label">
+                    Gas limit
+                </div>
+                <div class="c-block-page__info-item-value">
+                    {{ block.gasLimit }}
+                </div>
+            </div>
+            <div class="c-block-page__info-item">
+                <div class="c-block-page__info-item-label">
+                    Nonce
+                </div>
+                <div class="c-block-page__info-item-value">
+                    {{ block.nonce }}
+                </div>
+            </div>
+            <div class="c-block-page__info-item">
+                <div class="c-block-page__info-item-label">
+                    Extra data
+                </div>
+                <div class="c-block-page__info-item-value">
+                    {{ block.extraData }}
+                </div>
+            </div>
+        </div>
+
+        <div class="c-block-page__transactions">
+            {% include 'Transaction/list-transactions.html.twig' with {transactions: transactions} only %}
+
+            <div class="c-block-page__transactions-pagination">
+                {{ knp_pagination_render(transactions) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

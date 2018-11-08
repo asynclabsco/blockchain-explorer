@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% include 'block/list-blocks.html.twig' with {blocks: latestBlocks} only %}
-    {% include 'transaction/list-transactions.html.twig' with {transactions: latestTransactions} only %}
+    <div class="c-landing-page">
+        {% include 'Block/list-blocks.html.twig' with {blocks: latestBlocks} only %}
+        {% include 'Transaction/list-transactions.html.twig' with {transactions: latestTransactions} only %}
+    </div>
 {% endblock %}

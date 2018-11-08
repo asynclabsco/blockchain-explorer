@@ -21,9 +21,27 @@ class Block
 
     /**
      * @var string
-     * @ORM\Column(type="string", nullable=false, name="block_number")
+     * @ORM\Column(type="string", nullable=false)
      */
-    private $blockNumber;
+    private $difficulty;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=false, length=1000)
+     */
+    private $extraData;
+
+    /**
+     * @var int
+     * @ORM\Column(type="string", nullable=false)
+     */
+    private $gasLimit;
+
+    /**
+     * @var integer
+     * @ORM\Column(type="string", nullable=false)
+     */
+    private $gasUsed;
 
     /**
      * @var string
@@ -33,28 +51,59 @@ class Block
 
     /**
      * @var string
+     * @ORM\Column(type="string", nullable=false, length=514)
+     */
+    private $logsBloom;
+
+    /**
+     * @var Address
+     * @ORM\ManyToOne(targetEntity="App\Entity\Address", cascade={"persist"})
+     * @ORM\JoinColumn(referencedColumnName="address")
+     */
+    private $miner;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=false, length=500))
+     */
+    private $mixHash;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=false)
+     */
+    private $nonce;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=false, name="block_number")
+     */
+    private $blockNumber;
+
+    /**
+     * @var string
      * @ORM\Column(type="string", nullable=true)
      */
-    private $previousBlockHash;
+    private $parentBlockHash;
 
     /**
      * @var null|Block
      * @ORM\OneToOne(targetEntity="App\Entity\Block")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id")
      */
-    private $previousBlock;
+    private $parentBlock;
 
     /**
-     * @var integer
+     * @var string
      * @ORM\Column(type="string", nullable=false)
      */
-    private $gasUsed;
+    private $receiptsRoot;
 
     /**
-     * @var int
+     * @var string
      * @ORM\Column(type="string", nullable=false)
      */
-    private $gasLimit;
+    private $sha3Uncles;
 
     /**
      * @var int
@@ -63,10 +112,34 @@ class Block
     private $size;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", nullable=false)
+     */
+    private $stateRoot;
+
+    /**
      * @var DateTime
      * @ORM\Column(type="datetime", nullable=false)
      */
     private $timestamp;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=false)
+     */
+    private $totalDifficulty;
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    private $numberOfTransactions;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=false)
+     */
+    private $transactionsRoot;
 
     public function __construct(string $blockNumber)
     {
@@ -94,24 +167,24 @@ class Block
         $this->blockHash = $blockHash;
     }
 
-    public function getPreviousBlockHash(): string
+    public function getParentBlockHash(): string
     {
-        return $this->previousBlockHash;
+        return $this->parentBlockHash;
     }
 
-    public function setPreviousBlockHash(string $previousBlockHash)
+    public function setParentBlockHash(string $parentBlockHash)
     {
-        $this->previousBlockHash = $previousBlockHash;
+        $this->parentBlockHash = $parentBlockHash;
     }
 
-    public function getPreviousBlock(): ?Block
+    public function getParentBlock(): ?Block
     {
-        return $this->previousBlock;
+        return $this->parentBlock;
     }
 
-    public function setPreviousBlock(?Block $previousBlock)
+    public function setParentBlock(?Block $parentBlock)
     {
-        $this->previousBlock = $previousBlock;
+        $this->parentBlock = $parentBlock;
     }
 
     public function getGasUsed(): int
@@ -140,6 +213,11 @@ class Block
         }
 
         $this->gasLimit = $gasLimit;
+    }
+
+    public function getGasUsedPercentage()
+    {
+        return ($this->gasUsed / $this->gasLimit) * 100;
     }
 
     public function getSize(): int
@@ -173,5 +251,125 @@ class Block
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function getNumberOfTransactions(): int
+    {
+        return $this->numberOfTransactions;
+    }
+
+    public function setNumberOfTransactions(int $numberOfTransactions)
+    {
+        $this->numberOfTransactions = $numberOfTransactions;
+    }
+
+    public function getDifficulty(): string
+    {
+        return $this->difficulty;
+    }
+
+    public function setDifficulty(string $difficulty)
+    {
+        $this->difficulty = $difficulty;
+    }
+
+    public function getExtraData(): string
+    {
+        return $this->extraData;
+    }
+
+    public function setExtraData(string $extraData)
+    {
+        $this->extraData = $extraData;
+    }
+
+    public function getLogsBloom(): string
+    {
+        return $this->logsBloom;
+    }
+
+    public function setLogsBloom(string $logsBloom)
+    {
+        $this->logsBloom = $logsBloom;
+    }
+
+    public function getMiner(): Address
+    {
+        return $this->miner;
+    }
+
+    public function setMiner(Address $miner)
+    {
+        $this->miner = $miner;
+    }
+
+    public function getMixHash(): string
+    {
+        return $this->mixHash;
+    }
+
+    public function setMixHash(string $mixHash)
+    {
+        $this->mixHash = $mixHash;
+    }
+
+    public function getNonce(): string
+    {
+        return $this->nonce;
+    }
+
+    public function setNonce(string $nonce)
+    {
+        $this->nonce = $nonce;
+    }
+
+    public function getReceiptsRoot(): string
+    {
+        return $this->receiptsRoot;
+    }
+
+    public function setReceiptsRoot(string $receiptsRoot)
+    {
+        $this->receiptsRoot = $receiptsRoot;
+    }
+
+    public function getSha3Uncles(): string
+    {
+        return $this->sha3Uncles;
+    }
+
+    public function setSha3Uncles(string $sha3Uncles)
+    {
+        $this->sha3Uncles = $sha3Uncles;
+    }
+
+    public function getStateRoot(): string
+    {
+        return $this->stateRoot;
+    }
+
+    public function setStateRoot(string $stateRoot)
+    {
+        $this->stateRoot = $stateRoot;
+    }
+
+    public function getTotalDifficulty(): string
+    {
+        return $this->totalDifficulty;
+    }
+
+    public function setTotalDifficulty(string $totalDifficulty)
+    {
+        $this->totalDifficulty = $totalDifficulty;
+    }
+
+    public function getTransactionsRoot(): string
+    {
+        return $this->transactionsRoot;
+    }
+
+    public function setTransactionsRoot(string $transactionsRoot)
+    {
+        $this->transactionsRoot = $transactionsRoot;
     }
 }

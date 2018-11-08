@@ -1,0 +1,14 @@
+.c-transactions__list {
+    flex-basis: 50%;
+    padding: $paddingNormal;
+}
+
+.c-transactions__list-item {
+    padding: $paddingNormal;
+    box-sizing: content-box;
+
+    &:not(:last-of-type) {
+        border-bottom: 1px solid rgba($mainAccent, 0.4);
+    }
+}
+
