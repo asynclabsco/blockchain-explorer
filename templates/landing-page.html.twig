@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% set activePage = 'home' %}
+
 {% block body %}
     <div class="c-landing-page">
         {% include 'Block/list-blocks.html.twig' with {blocks: latestBlocks} only %}

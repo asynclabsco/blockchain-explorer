@@ -47,15 +47,20 @@ class TransactionParser
         }
         $transaction->setBlock($block);
 
+        $this->handleAddresses($transaction, $rawTransaction);
+
+        $this->transactionRepository->save($transaction);
+
+        return $transaction;
+    }
+
+    private function handleAddresses(Transaction &$transaction, array $rawTransaction)
+    {
         $fromAddress = $this->addressRepository->findOrCreateAddress($rawTransaction['from']);
         $transaction->setFrom($fromAddress);
 
         $toAddress = $this->addressRepository->findOrCreateAddress($rawTransaction['to']);
         $transaction->setTo($toAddress);
-
-        $this->transactionRepository->save($transaction);
-
-        return $transaction;
     }
 
 }

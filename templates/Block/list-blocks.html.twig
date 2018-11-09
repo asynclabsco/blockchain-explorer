@@ -20,6 +20,11 @@
                 <div class="c-block__parent-hash">
                     {{ block.parentBlockHash }}
                 </div>
+                {% if block.miner.walletAddress() %}
+                    <div class="c-block__miner">
+                        {{ block.miner.address }}
+                    </div>
+                {% endif %}
             </div>
         </div>
     {% endfor %}

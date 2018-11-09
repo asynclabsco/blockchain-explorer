@@ -1,25 +1,27 @@
 <div class="c-header">
-    <div class="c-header__branding">
-        <div class="c-header__logo">
-            <a href="{{ path('be.landing_page') }}">
-                <img src="{{ asset('images/logo250x250.png') }}" alt="{{ title }}">
-            </a>
+    <div class="c-container c-header__inner-container">
+        <div class="c-header__branding">
+            <div class="c-header__logo">
+                <a href="{{ path('be.landing_page') }}">
+                    <img src="{{ asset('images/logo250x250.png') }}" alt="{{ title }}">
+                </a>
+            </div>
+            <div class="c-header__title">
+                <a href="{{ path('be.landing_page') }}">
+                    {{ title }}
+                </a>
+            </div>
         </div>
-        <div class="c-header__title">
-            <a href="{{ path('be.landing_page') }}">
-                {{ title }}
-            </a>
-        </div>
-    </div>
-    <div class="c-header__navigation">
-        <div class="c-header__navigation-item">
-            <a href="{{ path('be.landing_page') }}">Home</a>
-        </div>
-        <div class="c-header__navigation-item">
-            <a href="{{ path('be.block.get_all_blocks') }}">Blocks</a>
-        </div>
-        <div class="c-header__navigation-item">
-            <a href="{{ path('be.transaction.show_all_transactions') }}">Transactions</a>
+        <div class="c-header__navigation">
+            <div class="c-header__navigation-item {{ activePage == 'home' ? 'c-header__navigation-item--active' }}">
+                <a href="{{ path('be.landing_page') }}">Home</a>
+            </div>
+            <div class="c-header__navigation-item {{ activePage == 'blocks' ? 'c-header__navigation-item--active' }}">
+                <a href="{{ path('be.block.get_all_blocks') }}">Blocks</a>
+            </div>
+            <div class="c-header__navigation-item {{ activePage == 'transactions' ? 'c-header__navigation-item--active' }}">
+                <a href="{{ path('be.transaction.show_all_transactions') }}">Transactions</a>
+            </div>
         </div>
     </div>
 </div>

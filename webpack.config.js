@@ -2,9 +2,10 @@ const path = require('path');
 
 const outputDir = 'public/dist';
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
 module.exports = {
   // Entry file through which everything is created
@@ -24,6 +25,13 @@ module.exports = {
       // both options are optional
       filename: '[name].css',
       chunkFilename: '[id].css'
+    }),
+    new BrowserSyncPlugin({
+      host: 'localhost',
+      proxy: 'localhost',
+      files: ['./public/dist/*.js', './public/dist/*.css']
+    }, {
+      reload: false
     })
   ],
   optimization: {
@@ -61,13 +69,15 @@ module.exports = {
       },
       {
         test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-        use: [{
-          loader: 'file-loader',
-          options: {
-            name: '[name].[ext]',
-            outputPath: 'fonts/'
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'fonts/'
+            }
           }
-        }]
+        ]
       }
     ]
   }

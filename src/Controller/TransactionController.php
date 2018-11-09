@@ -58,7 +58,7 @@ class TransactionController
 
         $transactionQb = $this->transactionRepository->findAllTransactionsQb();
 
-        $transactions = $this->paginator->paginate($transactionQb, $page, 10);
+        $transactions = $this->paginator->paginate($transactionQb, $page, 20);
 
         $body = $this->twig->render('Transaction/all-transactions.html.twig', [
             'transactions' => $transactions,

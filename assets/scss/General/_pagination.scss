@@ -1,0 +1,34 @@
+.c-pagination {
+    padding: $paddingNormal;
+    text-align: center;
+    margin: $marginNormal 0;
+
+    &__button {
+        margin: 0;
+        color: $mainAccentColor;
+
+        a {
+            padding: $paddingSmall $paddingNormal;
+            display: inline-block;
+        }
+
+        &--current {
+
+            a {
+                background: $mainColor;
+                color: white;
+                font-weight: bold;
+            }
+        }
+
+        &--first,
+        &--previous,
+        &--next,
+        &--last {
+
+            a {
+                font-style: italic;
+            }
+        }
+    }
+}

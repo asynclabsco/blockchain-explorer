@@ -1,15 +1,19 @@
 // Global setup
 @import "misc/normalize.css";
 @import "misc/variables";
+@import "misc/breakpoints";
 @import "misc/fonts";
 @import "misc/container";
+@import "misc/table";
 // Global styles has to go after Global setup
 @import "misc/global";
 // Global components
 @import "General/header";
 @import "General/footer";
+@import "General/pagination";
 @import "Components/block";
 @import "Components/transaction";
 // Pages
 @import "LandingPage/_landing-page";
 @import "Block/block-page";
+@import "Block/all-blocks-page";

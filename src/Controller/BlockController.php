@@ -71,9 +71,10 @@ class BlockController
     public function getAllBlocks(Request $request)
     {
         $page = $request->query->getInt('page', 1);
+        $limit = $request->query->getInt('perPage', 20);
 
         $blocksQb = $this->blockRepository->findAllBlocksQb();
-        $blocks = $this->paginator->paginate($blocksQb, $page, 10);
+        $blocks = $this->paginator->paginate($blocksQb, $page, $limit);
 
         $body = $this->twig->render('Block/all-blocks.html.twig', [
             'blocks' => $blocks,

@@ -1,11 +1,57 @@
 {% extends 'base.html.twig' %}
 
+{% set activePage = 'transactions' %}
+
 {% block body %}
     <div class="c-all-transactions-page">
         <h1>Transactions</h1>
 
         <div class="c-all-transactions-page__transactions">
-            {% include 'Transaction/list-transactions.html.twig' with {transactions: transactions} only %}
+            <div class="c-table">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>TxHash</th>
+                        <th>Block</th>
+                        <th>Age</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Value</th>
+                        <th>TxFee</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for transaction in transactions %}
+                        <tr>
+                            <td>
+                                <a href="{{ path('be.transaction.show_transaction', {id: transaction.txHash}) }}">
+                                    {{ transaction.txHash|truncate(16) }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ path('be.block.show_block', {blockHashOrNumber: transaction.block.blockNumber}) }}">
+                                    {{ '#' ~ transaction.block.id }}
+                                </a>
+                            </td>
+                            {# TODO Time ago#}
+                            <td>{{ transaction.block.timestamp|date('U') }}</td>
+                            <td>
+                                <a href="{{ path('be.address.show_address', {address: transaction.from.address}) }}">
+                                    {{ transaction.from.address|truncate(16) }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ path('be.address.show_address', {address: transaction.to.address}) }}">
+                                    {{ transaction.to.address|truncate(16) }}
+                                </a>
+                            </td>
+                            <td>{{ transaction.value|weiTransform('ether') ~ ' ETH'}}</td>
+                            <td>{{ transaction.gasPrice|weiTransform('Gwei') ~ ' Gwei' }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
             <div class="c-all-transactions-page__transactions-navigation">
                 {{ knp_pagination_render(transactions) }}

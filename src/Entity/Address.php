@@ -53,4 +53,9 @@ class Address
     {
         return $this->address === self::NULL_ADDRESS;
     }
+
+    public function isWalletAddress(): bool
+    {
+        return !$this->isNullAddress();
+    }
 }

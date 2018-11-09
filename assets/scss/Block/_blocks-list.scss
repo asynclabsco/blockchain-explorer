@@ -1,0 +1,9 @@
+.c-blocks__list {
+    flex-basis: 50%;
+    margin: $marginLarge $marginNormal;
+}
+
+.c-blocks__list-item {
+    box-sizing: content-box;
+    margin-bottom: $marginNormal;
+}

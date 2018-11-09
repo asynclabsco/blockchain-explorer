@@ -4,19 +4,21 @@ body {
 }
 
 body {
-    font-family: 'PT Serif', serif;
-    color: $mainAccent;
+    font-family: $textFontFamily;
+    color: $mainAccentColor;
+    font-size: 1em;
 }
 
 a {
-    color: $main;
+    color: rgba($mainAccentColor, 0.7);
     text-decoration: none;
+    font-weight: bold;
 
     &:hover,
     &:focus,
     &:active,
     &:visited {
-        color: $main;
+        color: $mainAccentColor;
         text-decoration: none;
     }
 }
@@ -27,5 +29,5 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: 'Fjalla One', sans-serif;
+    font-family: $headingFontFamily;
 }

@@ -1,0 +1,30 @@
+.c-table {
+    width: 100%;
+    overflow-x: auto;
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th {
+            text-align: left;
+            padding: $paddingSmall 5px;
+            background: rgba($gray, 0.1);
+        }
+
+        td {
+            padding: 5px;
+        }
+
+        tbody {
+
+            tr {
+
+                &:not(:last-of-type) {
+                    border-bottom: 1px solid rgba($gray, 0.3);
+                }
+            }
+        }
+
+    }
+}

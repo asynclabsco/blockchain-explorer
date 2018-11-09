@@ -1,4 +1,21 @@
 .c-container {
     position: relative;
-    padding-top: $containerTopPaddingOffset;
+    width: 100%;
+    margin: 0 auto;
+
+    &--with-header-offset {
+        padding-top: $containerTopPaddingOffset;
+    }
+
+    @include for-tablet-portrait-up {
+        width: 600px;
+    }
+
+    @include for-tablet-landscape-up {
+        width: 900px;
+    }
+
+    @include for-desktop-up {
+        width: 1200px;
+    }
 }
