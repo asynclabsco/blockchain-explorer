@@ -2,6 +2,136 @@
 
 {% block body %}
     <div class="c-transaction-page">
-        {# todo #}
+        <h4>txHash</h4>
+        <h1>{{ transaction.txHash }}</h1>
+
+        <div class="c-transaction-page__info">
+            <div class="c-transaction-page__info-item">
+                <div class="c-transaction-page__info-item-label">
+                    TxHash
+                </div>
+                <div class="c-transaction-page__info-item-value">
+                    {{ transaction.txHash }}
+                </div>
+            </div>
+            <div class="c-transaction-page__info-item">
+                <div class="c-transaction-page__info-item-label">
+                    Tx Receipt status
+                </div>
+                <div class="c-transaction-page__info-item-value">
+                    {{ transaction.isSuccessful() ? 'Success' }}
+                    {{ transaction.isFailed() ? 'Failure' }}
+                    {{ transaction.isWaitingForReceipt() ? 'Waiting for receipt...' }}
+                </div>
+            </div>
+            <div class="c-transaction-page__info-item">
+                <div class="c-transaction-page__info-item-label">
+                    Block
+                </div>
+                <div class="c-transaction-page__info-item-value">
+                    <a href="{{ path('be.block.show_block', {blockHashOrNumber: transaction.block.blockNumber}) }}">
+                        {{ '#' ~ transaction.block.id }}
+                    </a>
+                </div>
+            </div>
+            <div class="c-transaction-page__info-item">
+                <div class="c-transaction-page__info-item-label">
+                    Timestamp
+                </div>
+                <div class="c-transaction-page__info-item-value">
+                    {{ transaction.block.timestamp|date('U') }}
+                </div>
+            </div>
+            <div class="c-transaction-page__info-item">
+                <div class="c-transaction-page__info-item-label">
+                    From
+                </div>
+                <div class="c-transaction-page__info-item-value">
+                    <a href="{{ path('be.address.show_address', {address: transaction.from.address}) }}">
+                        {{ transaction.from.address }}
+                    </a>
+                </div>
+            </div>
+            <div class="c-transaction-page__info-item">
+                <div class="c-transaction-page__info-item-label">
+                    To
+                </div>
+                <div class="c-transaction-page__info-item-value">
+                    <a href="{{ path('be.address.show_address', {address: transaction.to.address}) }}">
+                        {{ transaction.to.address }}
+                    </a>
+                </div>
+            </div>
+            <div class="c-transaction-page__info-item">
+                <div class="c-transaction-page__info-item-label">
+                    Value
+                </div>
+                <div class="c-transaction-page__info-item-value">
+                    {{ transaction.value|weiTransform('ether') ~ ' ETH' }}
+                </div>
+            </div>
+            <div class="c-transaction-page__info-item">
+                <div class="c-transaction-page__info-item-label">
+                    Gas limit
+                </div>
+                <div class="c-transaction-page__info-item-value">
+                    {{ transaction.gasLimit }}
+                </div>
+            </div>
+            <div class="c-transaction-page__info-item">
+                <div class="c-transaction-page__info-item-label">
+                    Gas used by transaction
+                </div>
+                <div class="c-transaction-page__info-item-value">
+                    {{ transaction.gasUsed }}
+                </div>
+            </div>
+            <div class="c-transaction-page__info-item">
+                <div class="c-transaction-page__info-item-label">
+                    Gas price
+                </div>
+                <div class="c-transaction-page__info-item-value">
+                    {{ transaction.gasPrice|weiTransform('Gwei') ~ ' Gwei' }}
+                </div>
+            </div>
+            <div class="c-transaction-page__info-item">
+                <div class="c-transaction-page__info-item-label">
+                    Actual tx fee
+                </div>
+                <div class="c-transaction-page__info-item-value">
+                    {{ transaction.getActualTxFee()|weiTransform('ether', 8) ~ ' ETH' }}
+                </div>
+            </div>
+            <div class="c-transaction-page__info-item">
+                <div class="c-transaction-page__info-item-label">
+                    Nonce
+                </div>
+                <div class="c-transaction-page__info-item-value">
+                    {{ transaction.nonce }}
+                </div>
+            </div>
+            <div class="c-transaction-page__info-item">
+                <div class="c-transaction-page__info-item-label">
+                    Input data
+                </div>
+                <div class="c-transaction-page__info-item-value">
+                    {# TODO decoded data#}
+                    {{ transaction.data }}
+                </div>
+            </div>
+
+            {% if transaction.isContractCreationTransaction() %}
+                <div class="c-transaction-page__info-item">
+                    <div class="c-transaction-page__info-item-label">
+                        Contract address
+                    </div>
+                    <div class="c-transaction-page__info-item-value">
+                        <a href="{{ path('be.address.show_address', {address: transaction.contractAddress.address}) }}">
+                            {{ transaction.contractAddress.address }}
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}

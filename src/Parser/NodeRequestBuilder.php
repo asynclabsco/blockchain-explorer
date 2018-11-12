@@ -26,7 +26,7 @@ class NodeRequestBuilder
     }
 
     // TODO Tests
-    public function executeSingleRequest(?string $validJsonRPCPayload): array
+    public function executeRequest(?string $validJsonRPCPayload): array
     {
         $res = $this->client->request('POST', $this->nodeRpcUrlParameter->getPath(), [
             'headers' => [

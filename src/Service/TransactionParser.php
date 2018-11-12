@@ -33,7 +33,7 @@ class TransactionParser
     {
         $transaction = new Transaction();
         $transaction->setTxHash($rawTransaction['hash']);
-        $transaction->setGas($rawTransaction['gas']);
+        $transaction->setGasLimit($rawTransaction['gas']);
         $transaction->setGasPrice($rawTransaction['gasPrice']);
         $transaction->setNonce($rawTransaction['nonce']);
         $transaction->setValue($rawTransaction['value']);

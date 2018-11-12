@@ -20,7 +20,7 @@ class AddressRepository
         $this->repository = $this->em->getRepository(Address::class);
     }
 
-    public function findOrCreateAddress(string $walletAddress)
+    public function findOrCreateAddress(string $walletAddress): Address
     {
         $address = $this->repository->find($walletAddress);
 

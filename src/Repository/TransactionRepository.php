@@ -89,4 +89,15 @@ class TransactionRepository
 
         return $qb;
     }
+
+    public function getBatchOfTransactionsWithoutReceipt()
+    {
+        $qb = $this->repository->createQueryBuilder('t');
+
+        $qb->where('t.status IS NULL');
+
+        $qb->setMaxResults(50);
+
+        return $qb->getQuery()->getResult();
+    }
 }

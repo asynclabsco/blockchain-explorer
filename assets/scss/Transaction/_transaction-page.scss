@@ -1,0 +1,25 @@
+.c-transaction-page {
+
+    &__info {
+    }
+
+    &__info-item {
+        display: flex;
+        flex-direction: row;
+    }
+
+    &__info-item-label {
+        flex-basis: 25%;
+        padding: $paddingSmall;
+        font-weight: bold;
+    }
+
+    &__info-item-value {
+        flex-basis: 75%;
+        padding: $paddingSmall;
+    }
+
+    div {
+        word-break: break-word;
+    }
+}

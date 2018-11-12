@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Block;
+use App\Enum\GethJsonRPCMethodsEnum;
 use App\Parser\NodeRequestBuilder;
 use App\Repository\BlockRepository;
 use Datto\JsonRpc\Client as JsonRpcClient;
@@ -70,12 +71,12 @@ class FetchLatestBlockFromBlockchainService
         $rawBlocksArray = [];
 
         for ($i = 1; $i <= 50; $i++) {
-            $this->jsonRpcClient->query($i, 'eth_getBlockByNumber',
+            $this->jsonRpcClient->query($i, GethJsonRPCMethodsEnum::GET_BLOCK_BY_NUMBER,
                 [NumberBaseConverter::toHex($blockNumberDec + $i), true]);
         }
         $message = $this->jsonRpcClient->encode();
 
-        $responseArray = $this->nodeRequestBuilder->executeSingleRequest($message);
+        $responseArray = $this->nodeRequestBuilder->executeRequest($message);
 
         /** @var Response $response */
         foreach ($responseArray as $response) {

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\AddressTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,6 +24,12 @@ class Address
      * @ORM\Column(type="integer", nullable=false)
      */
     private $ethereumBalance = 0;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=false)
+     */
+    private $type = AddressTypeEnum::WALLET;
 
     public function __construct(string $address)
     {
@@ -56,6 +63,26 @@ class Address
 
     public function isWalletAddress(): bool
     {
-        return !$this->isNullAddress();
+        return !$this->isNullAddress() && $this->type === AddressTypeEnum::WALLET;
+    }
+
+    public function isSmartContractAddress(): bool
+    {
+        return !$this->isNullAddress() && $this->type === AddressTypeEnum::SMART_CONTRACT;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type)
+    {
+        $this->type = $type;
+    }
+
+    public function markSmartContract()
+    {
+        $this->type = AddressTypeEnum::SMART_CONTRACT;
     }
 }
