@@ -5,6 +5,7 @@
 
     &--with-header-offset {
         padding-top: $containerTopPaddingOffset;
+        margin: 0 auto $marginLarge;
     }
 
     @include for-tablet-portrait-up {

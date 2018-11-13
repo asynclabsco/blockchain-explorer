@@ -32,7 +32,7 @@ class AddressRepository
         return $address;
     }
 
-    private function save(Address $address)
+    public function save(Address $address)
     {
         $this->em->persist($address);
         $this->em->flush();
@@ -41,5 +41,14 @@ class AddressRepository
     public function find($address): ?Address
     {
         return $this->repository->find($address);
+    }
+
+    public function findAllAddresesQb()
+    {
+        $qb = $this->repository->createQueryBuilder('a');
+
+        $qb->orderBy('a.ethereumBalance', 'DESC');
+
+        return $qb;
     }
 }

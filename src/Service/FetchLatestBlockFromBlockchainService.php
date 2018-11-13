@@ -11,6 +11,8 @@ use Datto\JsonRpc\Response;
 
 class FetchLatestBlockFromBlockchainService
 {
+    const NUMBER_OF_BLOCKS_PER_REQUEST = 50;
+
     /** @var BlockRepository */
     private $blockRepository;
 
@@ -70,7 +72,7 @@ class FetchLatestBlockFromBlockchainService
     {
         $rawBlocksArray = [];
 
-        for ($i = 1; $i <= 50; $i++) {
+        for ($i = 1; $i <= self::NUMBER_OF_BLOCKS_PER_REQUEST; $i++) {
             $this->jsonRpcClient->query($i, GethJsonRPCMethodsEnum::GET_BLOCK_BY_NUMBER,
                 [NumberBaseConverter::toHex($blockNumberDec + $i), true]);
         }

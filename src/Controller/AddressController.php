@@ -51,11 +51,28 @@ class AddressController
         }
 
         $transactionsQb = $this->transactionsRepository->findTransactionsByAddress($address);
-        $transactions = $this->paginator->paginate($transactionsQb, $page, 10);
+        $transactions = $this->paginator->paginate($transactionsQb, $page, 20);
 
         $body = $this->twig->render('Address/show-address.html.twig', [
             'address'      => $address,
             'transactions' => $transactions,
+        ]);
+
+        return new Response($body);
+    }
+
+    /**
+     * @Route("/addresses", name="be.address.show_all_addresses")
+     */
+    public function showAllAddresses(Request $request)
+    {
+        $page = $request->query->getInt('page', 1);
+
+        $addressesQb = $this->addressRepository->findAllAddresesQb();
+        $addresses = $this->paginator->paginate($addressesQb, $page, 10);
+
+        $body = $this->twig->render('Address/all-addresses.html.twig', [
+            'addresses' => $addresses,
         ]);
 
         return new Response($body);

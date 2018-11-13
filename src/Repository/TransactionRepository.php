@@ -100,4 +100,13 @@ class TransactionRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findSuccessfullTransactionsForBlock(Block $block)
+    {
+        $qb = $this->findTransactionsByBlockQb($block);
+
+        $qb->andWhere('t.status = true');
+
+        return $qb->getQuery()->getResult();
+    }
 }

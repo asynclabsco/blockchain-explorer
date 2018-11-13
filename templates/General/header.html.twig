@@ -22,6 +22,9 @@
             <div class="c-header__navigation-item {{ activePage == 'transactions' ? 'c-header__navigation-item--active' }}">
                 <a href="{{ path('be.transaction.show_all_transactions') }}">Transactions</a>
             </div>
+            <div class="c-header__navigation-item {{ activePage == 'addresses' ? 'c-header__navigation-item--active' }}">
+                <a href="{{ path('be.address.show_all_addresses') }}">Addresses</a>
+            </div>
         </div>
     </div>
 </div>

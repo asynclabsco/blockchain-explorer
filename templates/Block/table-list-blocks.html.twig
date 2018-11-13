@@ -1,0 +1,55 @@
+<div class="c-table">
+    <table>
+        <thead>
+        <tr>
+            <th>Height</th>
+            <th>Age</th>
+            <th>txns</th>
+            <th>Uncles</th>
+            {# TODO Check is network POA and then hide #}
+            {% if appConsensusProtocol == 'POW' %}
+                <th>Miner</th>
+            {% endif %}
+            <th>Gas used</th>
+            <th>Gas limit</th>
+            <th>Avg. Gas Price</th>
+            {# TODO Check is network POA and then hide #}
+            {% if appConsensusProtocol == 'POW' %}
+                <th>Reward</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for block in blocks %}
+            <tr>
+                <td>
+                    <a href="{{ path('be.block.show_block', {blockHashOrNumber: block.blockNumber}) }}">
+                        {{ '#' ~ block.id }}
+                    </a>
+                </td>
+                {# TODO time ago filter #}
+                <td>{{ block.timestamp|ago }}</td>
+                <td>{{ block.numberOfTransactions }}</td>
+                <td>{# TODO #}</td>
+                {% if appConsensusProtocol == 'POW' %}
+                    <td>
+                        <a href="{{ path('be.address.show_address', {address: block.miner.address}) }}">
+                            {{- block.miner.address|truncate(16) -}}
+                        </a>
+                    </td>
+                {% endif %}
+                <td>{{ block.gasUsed }}</td>
+                <td>{{ block.gasLimit }}</td>
+                <td>{{ block.averageGasPrice|weiTransform('Gwei') }}</td>
+                {% if appConsensusProtocol == 'POW' %}
+                    <td>{# TODO block reward #}</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="c-all-blocks-page__blocks-pagination">
+    {{ knp_pagination_render(blocks) }}
+</div>

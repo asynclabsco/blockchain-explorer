@@ -14,17 +14,17 @@ class BlockParser
     /** @var TransactionParser */
     private $transactionParser;
 
-    /** @var AddressRepository */
-    private $addressRepository;
+    /** @var AddressFinderService */
+    private $addressFinderService;
 
     public function __construct(
         BlockRepository $blockRepository,
         TransactionParser $transactionParser,
-        AddressRepository $addressRepository
+        AddressFinderService $addressFinderService
     ) {
         $this->blockRepository = $blockRepository;
         $this->transactionParser = $transactionParser;
-        $this->addressRepository = $addressRepository;
+        $this->addressFinderService = $addressFinderService;
     }
 
     public function parseRawBlock(?array $rawBlock): ?Block
@@ -41,7 +41,7 @@ class BlockParser
         $block->setBlockHash($rawBlock['hash']);
         $block->setLogsBloom($rawBlock['logsBloom']);
 
-        $minerAddress = $this->addressRepository->findOrCreateAddress($rawBlock['miner']);
+        $minerAddress = $this->addressFinderService->findOrCreateAddress($rawBlock['miner']);
         $block->setMiner($minerAddress);
 
         $block->setMixHash($rawBlock['mixHash']);

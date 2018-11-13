@@ -39,7 +39,7 @@
                     Timestamp
                 </div>
                 <div class="c-transaction-page__info-item-value">
-                    {{ transaction.block.timestamp|date('U') }}
+                    {{ transaction.block.timestamp|ago }} ({{ transaction.block.timestamp|date }})
                 </div>
             </div>
             <div class="c-transaction-page__info-item">
@@ -67,7 +67,7 @@
                     Value
                 </div>
                 <div class="c-transaction-page__info-item-value">
-                    {{ transaction.value|weiTransform('ether') ~ ' ETH' }}
+                    {{ transaction.value|weiTransform('ether') }}
                 </div>
             </div>
             <div class="c-transaction-page__info-item">
@@ -91,7 +91,7 @@
                     Gas price
                 </div>
                 <div class="c-transaction-page__info-item-value">
-                    {{ transaction.gasPrice|weiTransform('Gwei') ~ ' Gwei' }}
+                    {{ transaction.gasPrice|weiTransform('Gwei') }}
                 </div>
             </div>
             <div class="c-transaction-page__info-item">
@@ -99,7 +99,7 @@
                     Actual tx fee
                 </div>
                 <div class="c-transaction-page__info-item-value">
-                    {{ transaction.getActualTxFee()|weiTransform('ether', 8) ~ ' ETH' }}
+                    {{ transaction.getActualTxFee()|weiTransform('ether', 8) }}
                 </div>
             </div>
             <div class="c-transaction-page__info-item">

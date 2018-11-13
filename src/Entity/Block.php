@@ -47,6 +47,12 @@ class Block
      * @var string
      * @ORM\Column(type="string", nullable=false)
      */
+    private $averageGasPrice = 0;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=false)
+     */
     private $blockHash;
 
     /**
@@ -371,5 +377,15 @@ class Block
     public function setTransactionsRoot(string $transactionsRoot)
     {
         $this->transactionsRoot = $transactionsRoot;
+    }
+
+    public function getAverageGasPrice(): string
+    {
+        return $this->averageGasPrice;
+    }
+
+    public function setAverageGasPrice($averageGasPrice)
+    {
+        $this->averageGasPrice = $averageGasPrice;
     }
 }

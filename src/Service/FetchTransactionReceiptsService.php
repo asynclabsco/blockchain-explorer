@@ -4,8 +4,8 @@ namespace App\Service;
 
 use App\Entity\Transaction;
 use App\Enum\GethJsonRPCMethodsEnum;
+use App\Event\TransactionReceiptReceivedEvent;
 use App\Parser\NodeRequestBuilder;
-use App\Repository\AddressRepository;
 use App\Repository\TransactionRepository;
 use Datto\JsonRpc\Client as JsonRpcClient;
 use Datto\JsonRpc\Response;
@@ -18,8 +18,11 @@ class FetchTransactionReceiptsService
     /** @var NodeRequestBuilder */
     private $nodeRequestBuilder;
 
-    /** @var AddressRepository */
-    private $addressRepository;
+    /** @var AddressFinderService */
+    private $addressFinderService;
+
+    /** @var EventBus */
+    private $eventBus;
 
     /** @var JsonRpcClient */
     private $jsonRpcClient;
@@ -27,11 +30,13 @@ class FetchTransactionReceiptsService
     public function __construct(
         TransactionRepository $transactionRepository,
         NodeRequestBuilder $nodeRequestBuilder,
-        AddressRepository $addressRepository
+        AddressFinderService $addressFinderService,
+        EventBus $eventBus
     ) {
         $this->transactionRepository = $transactionRepository;
         $this->nodeRequestBuilder = $nodeRequestBuilder;
-        $this->addressRepository = $addressRepository;
+        $this->addressFinderService = $addressFinderService;
+        $this->eventBus = $eventBus;
         $this->jsonRpcClient = new JsonRpcClient();
     }
 
@@ -105,9 +110,12 @@ class FetchTransactionReceiptsService
         $transaction->setGasUsed($responseResult['gasUsed']);
         $transaction->setLogsBloom($responseResult['logsBloom']);
 
+        $this->handleSuccesfulTransaction($transaction);
         $this->handleTransactionCreatedContract($transaction, $responseResult['contractAddress']);
 
         $this->transactionRepository->save($transaction);
+
+        $this->eventBus->dispatch(new TransactionReceiptReceivedEvent($transaction->getTxHash()));
     }
 
     private function handleTransactionCreatedContract(Transaction $transaction, ?string $contractAddress)
@@ -116,9 +124,19 @@ class FetchTransactionReceiptsService
             return;
         }
 
-        $address = $this->addressRepository->findOrCreateAddress($contractAddress);
+        $address = $this->addressFinderService->findOrCreateAddress($contractAddress);
         $address->markSmartContract();
 
         $transaction->setContractAddress($address);
+    }
+
+    private function handleSuccesfulTransaction(Transaction $transaction)
+    {
+        if (!$transaction->isSuccessful()) {
+            return;
+        }
+
+        $transaction->getFrom()->subtractBalance($transaction->getValue());
+        $transaction->getTo()->addBalance($transaction->getValue());
     }
 }

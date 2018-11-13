@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% set activePage = 'addresses' %}
+
+{% block body %}
+    <div class="c-all-addresses-page">
+        <h1>Addresses</h1>
+        <div class="c-all-addresses-page__addresses">
+            <div class="c-table">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Address</th>
+                        <th>Ethereum balance</th>
+                        <th>SC?</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for address in addresses %}
+                        <tr>
+                            <td>
+                                <a href="{{ path('be.address.show_address', {address: address.address}) }}">
+                                    {{ address.address }}
+                                </a>
+                            </td>
+                            <td>{{ address.ethereumBalance|weiTransform('ether') }}</td>
+                            <td>{{ address.isSmartContractAddress() ? 'SC' : '' }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="c-all-addresses-page__pagination">
+                {{ knp_pagination_render(addresses) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

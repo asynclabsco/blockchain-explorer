@@ -3,14 +3,10 @@
 {% block body %}
     <div class="c-address-page">
         <h1>Address: {{ address.address }}</h1>
-        <h3>Balance: {{ address.ethereumBalance|weiTransform('ether') ~ 'ETH' }}</h3>
+        <h3>Balance: {{ address.ethereumBalance|weiTransform('ether') }}</h3>
 
         <div class="c-address-page__transactions">
-            {% include 'Transaction/list-transactions.html.twig' with {transactions: transactions} only %}
-
-            <div class="c-address-page__transactions-pagination">
-                {{ knp_pagination_render(transactions) }}
-            </div>
+            {% include 'Transaction/table-list-transactions.html.twig' with {transactions: transactions} only %}
         </div>
     </div>
 {% endblock %}

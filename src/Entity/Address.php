@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Enum\AddressTypeEnum;
+use App\Service\NumberBaseConverter;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,8 +21,8 @@ class Address
     private $address;
 
     /**
-     * @var float
-     * @ORM\Column(type="integer", nullable=false)
+     * @var string
+     * @ORM\Column(type="decimal", precision=100, scale=0, nullable=false)
      */
     private $ethereumBalance = 0;
 
@@ -46,13 +47,17 @@ class Address
         $this->address = $address;
     }
 
-    public function getEthereumBalance(): float
+    public function getEthereumBalance(): string
     {
         return $this->ethereumBalance;
     }
 
-    public function setEthereumBalance(float $ethereumBalance)
+    public function setEthereumBalance(string $ethereumBalance)
     {
+        if (is_string($ethereumBalance)) {
+            $ethereumBalance = NumberBaseConverter::toDec($ethereumBalance);
+        }
+
         $this->ethereumBalance = $ethereumBalance;
     }
 
@@ -84,5 +89,15 @@ class Address
     public function markSmartContract()
     {
         $this->type = AddressTypeEnum::SMART_CONTRACT;
+    }
+
+    public function subtractBalance($value)
+    {
+        $this->ethereumBalance = (string)($this->ethereumBalance - $value);
+    }
+
+    public function addBalance($value)
+    {
+        $this->ethereumBalance = (string)($this->ethereumBalance + $value);
     }
 }

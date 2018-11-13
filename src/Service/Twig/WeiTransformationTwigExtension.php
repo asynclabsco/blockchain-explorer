@@ -19,6 +19,6 @@ class WeiTransformationTwigExtension extends Twig_Extension
     {
         $value = WeiTransformationService::transformWei($wei, $transformTo);
 
-        return number_format($value, $decimalPlaces, ',', '.');
+        return number_format($value, $decimalPlaces, ',', '.') . ' ' . $transformTo;
     }
 }

@@ -4,3 +4,4 @@ twig:
     strict_variables: '%kernel.debug%'
     globals:
         appTitle: '%env(APP_TITLE)%'
+        appConsensusProtocol: '%env(APP_CONSENSUS_PROTOCOL)%'
