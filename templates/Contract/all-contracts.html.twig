@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% set activePage = 'contracts' %}
+
+{% block body %}
+    <div class="c-all-contracts-page">
+        <h1>Contracts</h1>
+
+        <div class="c-all-contracts-page__contracts">
+            {% include 'Contract/table-list-contracts.html.twig' with {
+                contracts: contracts,
+                paginationClassName: 'c-all-contracts-page__contracts-pagination'
+            } only %}
+        </div>
+    </div>
+{% endblock %}

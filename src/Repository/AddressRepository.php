@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Address;
+use App\Enum\AddressTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 
@@ -46,6 +47,9 @@ class AddressRepository
     public function findAllAddresesQb()
     {
         $qb = $this->repository->createQueryBuilder('a');
+
+        $qb->where('a.type != :contract');
+        $qb->setParameter('contract', AddressTypeEnum::SMART_CONTRACT);
 
         $qb->orderBy('a.ethereumBalance', 'DESC');
 

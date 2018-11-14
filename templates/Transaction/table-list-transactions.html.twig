@@ -21,7 +21,7 @@
                 </td>
                 <td>
                     <a href="{{ path('be.block.show_block', {blockHashOrNumber: transaction.block.blockNumber}) }}">
-                        {{ '#' ~ transaction.block.id }}
+                        {{ '#' ~ transaction.block.blockNumberDecimal }}
                     </a>
                 </td>
                 {# TODO Time ago#}

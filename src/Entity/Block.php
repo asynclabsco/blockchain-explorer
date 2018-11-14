@@ -88,6 +88,12 @@ class Block
 
     /**
      * @var string
+     * @ORM\Column(type="string", nullable=false, name="block_number_decimal")
+     */
+    private $blockNumberDecimal;
+
+    /**
+     * @var string
      * @ORM\Column(type="string", nullable=true)
      */
     private $parentBlockHash;
@@ -149,7 +155,7 @@ class Block
 
     public function __construct(string $blockNumber)
     {
-        $this->blockNumber = $blockNumber;
+        $this->setBlockNumber($blockNumber);
         $this->id = NumberBaseConverter::toDec($blockNumber);
     }
 
@@ -161,6 +167,7 @@ class Block
     public function setBlockNumber(string $blockNumber)
     {
         $this->blockNumber = $blockNumber;
+        $this->blockNumberDecimal = NumberBaseConverter::toDec($blockNumber);
     }
 
     public function getBlockHash(): string
@@ -387,5 +394,10 @@ class Block
     public function setAverageGasPrice($averageGasPrice)
     {
         $this->averageGasPrice = $averageGasPrice;
+    }
+
+    public function getBlockNumberDecimal(): string
+    {
+        return $this->blockNumberDecimal;
     }
 }

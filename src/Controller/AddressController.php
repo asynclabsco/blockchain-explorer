@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Repository\AddressRepository;
 use App\Repository\TransactionRepository;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Twig_Environment;
 
 class AddressController
@@ -25,16 +27,21 @@ class AddressController
     /** @var PaginatorInterface */
     private $paginator;
 
+    /** @var RouterInterface */
+    private $router;
+
     public function __construct(
         Twig_Environment $twig,
         AddressRepository $addressRepository,
         TransactionRepository $transactionsRepository,
-        PaginatorInterface $paginator
+        PaginatorInterface $paginator,
+        RouterInterface $router
     ) {
         $this->twig = $twig;
         $this->addressRepository = $addressRepository;
         $this->transactionsRepository = $transactionsRepository;
         $this->paginator = $paginator;
+        $this->router = $router;
     }
 
     /**
@@ -48,6 +55,14 @@ class AddressController
 
         if (is_null($address)) {
             throw new NotFoundHttpException();
+        }
+
+        if ($address->isSmartContractAddress()) {
+            $contractUrl = $this->router->generate('be.contracts.show_contract', [
+                'address' => $address->getAddress(),
+            ]);
+
+            return new RedirectResponse($contractUrl);
         }
 
         $transactionsQb = $this->transactionsRepository->findTransactionsByAddress($address);

@@ -38,7 +38,7 @@ class Transaction
 
     /**
      * @var string
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="string", nullable=false, length=500000)
      */
     private $data;
 
@@ -61,7 +61,6 @@ class Transaction
      * @ORM\JoinColumn(referencedColumnName="address")
      */
     private $from;
-
 
     /**
      * This is ETH sent with transaction
@@ -133,6 +132,11 @@ class Transaction
 
     public function getTo(): Address
     {
+        // To address can be empty if it's contract creation
+        if (is_null($this->to)) {
+            return new Address(Address::NULL_ADDRESS);
+        }
+
         return $this->to;
     }
 

@@ -2,10 +2,12 @@
 
 namespace App\Service;
 
+use App\Entity\Contract;
 use App\Entity\Transaction;
 use App\Enum\GethJsonRPCMethodsEnum;
 use App\Event\TransactionReceiptReceivedEvent;
 use App\Parser\NodeRequestBuilder;
+use App\Repository\ContractRepository;
 use App\Repository\TransactionRepository;
 use Datto\JsonRpc\Client as JsonRpcClient;
 use Datto\JsonRpc\Response;
@@ -27,16 +29,21 @@ class FetchTransactionReceiptsService
     /** @var JsonRpcClient */
     private $jsonRpcClient;
 
+    /** @var ContractRepository */
+    private $contractRepository;
+
     public function __construct(
         TransactionRepository $transactionRepository,
         NodeRequestBuilder $nodeRequestBuilder,
         AddressFinderService $addressFinderService,
-        EventBus $eventBus
+        EventBus $eventBus,
+        ContractRepository $contractRepository
     ) {
         $this->transactionRepository = $transactionRepository;
         $this->nodeRequestBuilder = $nodeRequestBuilder;
         $this->addressFinderService = $addressFinderService;
         $this->eventBus = $eventBus;
+        $this->contractRepository = $contractRepository;
         $this->jsonRpcClient = new JsonRpcClient();
     }
 
@@ -126,6 +133,9 @@ class FetchTransactionReceiptsService
 
         $address = $this->addressFinderService->findOrCreateAddress($contractAddress);
         $address->markSmartContract();
+
+        $contract = new Contract($address);
+        $this->contractRepository->save($contract);
 
         $transaction->setContractAddress($address);
     }

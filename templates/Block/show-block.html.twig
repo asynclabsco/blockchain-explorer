@@ -2,14 +2,14 @@
 
 {% block body %}
     <div class="c-block-page">
-        <h1>{{ 'Block #' ~ block.id }}</h1>
+        <h1>{{ 'Block #' ~ block.blockNumberDecimal }}</h1>
         <div class="c-block-page__info">
             <div class="c-block-page__info-item">
                 <div class="c-block-page__info-item-label">
                     Height
                 </div>
                 <div class="c-block-page__info-item-value">
-                    {{ block.id }}
+                    {{ block.blockNumberDecimal }}
                 </div>
             </div>
             <div class="c-block-page__info-item">

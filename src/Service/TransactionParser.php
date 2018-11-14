@@ -55,11 +55,15 @@ class TransactionParser
 
     private function handleAddresses(Transaction &$transaction, array $rawTransaction)
     {
-        $fromAddress = $this->addressFinderService->findOrCreateAddress($rawTransaction['from']);
-        $transaction->setFrom($fromAddress);
+        if (!is_null($rawTransaction['from'])) {
+            $fromAddress = $this->addressFinderService->findOrCreateAddress($rawTransaction['from']);
+            $transaction->setFrom($fromAddress);
+        }
 
-        $toAddress = $this->addressFinderService->findOrCreateAddress($rawTransaction['to']);
-        $transaction->setTo($toAddress);
+        if (!is_null($rawTransaction['to'])) {
+            $toAddress = $this->addressFinderService->findOrCreateAddress($rawTransaction['to']);
+            $transaction->setTo($toAddress);
+        }
     }
 
 }

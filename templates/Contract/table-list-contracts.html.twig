@@ -1,0 +1,31 @@
+<div class="c-table">
+    <table>
+        <thead>
+        <tr>
+            <th>Address</th>
+            <th>Balance</th>
+            <th>ERC20</th>
+            <th>ERC721</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for contract in contracts %}
+            <tr>
+                {# TOOD link#}
+                <td>
+                    <a href="{{ path('be.contracts.show_contract', {address: contract.address.address}) }}">
+                        {{ contract.address.address }}
+                    </a>
+                </td>
+                <td>{{ contract.address.ethereumBalance|weiTransform('ether') }}</td>
+                <td>{# TODO #}</td>
+                <td>{# TODO #}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="{{ paginationClassName }}">
+    {{ knp_pagination_render(contracts) }}
+</div>

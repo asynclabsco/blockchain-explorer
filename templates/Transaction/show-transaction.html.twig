@@ -30,7 +30,7 @@
                 </div>
                 <div class="c-transaction-page__info-item-value">
                     <a href="{{ path('be.block.show_block', {blockHashOrNumber: transaction.block.blockNumber}) }}">
-                        {{ '#' ~ transaction.block.id }}
+                        {{ '#' ~ transaction.block.blockNumberDecimal }}
                     </a>
                 </div>
             </div>
