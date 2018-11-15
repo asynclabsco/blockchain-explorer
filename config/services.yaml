@@ -33,3 +33,12 @@ services:
     App\Parameters\NodeRpcUrlParameter:
         arguments:
             - '%env(NODE_RPC_URL)%'
+
+    App\Parameters\AppParameters:
+        arguments:
+            - '%env(NODE_RPC_URL)%'
+            - '%env(APP_TITLE)%'
+            - '%env(APP_CONSENSUS_PROTOCOL)%'
+            - '%env(APP_BLOCKS_PER_REQUEST)%'
+            - '%env(APP_STARTING_BLOCK)%'
+            - '%env(APP_TIMEOUT_BETWEEN_BLOCK_REQUESTS)%'

@@ -5,5 +5,10 @@
         <h1>Contract</h1>
         {# TODO #}
         <h5>TODO</h5>
+
+        <div class="c-show-contract-page__transactions">
+            <h3>Transactions</h3>
+            {% include 'Transaction/table-list-transactions.html.twig' with {transactions: transactions} only %}
+        </div>
     </div>
 {% endblock %}

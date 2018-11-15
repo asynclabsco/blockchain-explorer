@@ -30,7 +30,7 @@ class BlockRepository
     {
         $qb = $this->repository->createQueryBuilder('b');
 
-        $qb->orderBy('b.id', 'DESC');
+        $qb->orderBy('b.blockNumberDecimal', 'DESC');
         $qb->setMaxResults(1);
 
         return $qb->getQuery()->getOneOrNullResult();
@@ -45,7 +45,7 @@ class BlockRepository
     {
         $qb = $this->repository->createQueryBuilder('b');
 
-        $qb->orderBy('b.id', 'DESC');
+        $qb->orderBy('b.blockNumberDecimal', 'DESC');
 
         $qb->setMaxResults($limit);
 
@@ -67,7 +67,7 @@ class BlockRepository
     {
         $qb = $this->repository->createQueryBuilder('b');
 
-        $qb->orderBy('b.id', 'DESC');
+        $qb->orderBy('b.blockNumberDecimal', 'DESC');
 
         return $qb;
     }

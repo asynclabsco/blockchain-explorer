@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\ContractRepository;
+use App\Repository\TransactionRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,14 +22,19 @@ class ContractController
     /** @var PaginatorInterface */
     private $paginator;
 
+    /** @var TransactionRepository */
+    private $transactionRepository;
+
     public function __construct(
         Twig_Environment $twig,
         ContractRepository $contractRepository,
-        PaginatorInterface $paginator
+        PaginatorInterface $paginator,
+        TransactionRepository $transactionRepository
     ) {
         $this->twig = $twig;
         $this->contractRepository = $contractRepository;
         $this->paginator = $paginator;
+        $this->transactionRepository = $transactionRepository;
     }
 
     /**
@@ -53,14 +59,19 @@ class ContractController
      */
     public function showContract(Request $request, $address)
     {
+        $page = $request->query->getInt('page', 1);
         $contract = $this->contractRepository->findByAddress($address);
 
         if (is_null($contract)) {
             throw new NotFoundHttpException();
         }
 
+        $transactionsQb = $this->transactionRepository->findTransactionsByContractQb($contract);
+        $transactions = $this->paginator->paginate($transactionsQb, $page, 20);
+
         $body = $this->twig->render('Contract/show-contract.html.twig', [
-            'contract' => $contract,
+            'contract'     => $contract,
+            'transactions' => $transactions,
         ]);
 
         return new Response($body);

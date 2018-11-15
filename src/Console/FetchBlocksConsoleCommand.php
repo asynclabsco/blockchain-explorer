@@ -27,14 +27,8 @@ class FetchBlocksConsoleCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Started fetching blocks');
+        $numberOfNewBlocks = $this->fetchLatestBlockFromBlockchainService->fetchBlock();
 
-        while (true) {
-            $numberOfNewBlocks = $this->fetchLatestBlockFromBlockchainService->fetchBlock();
-
-            $output->writeln("Got {$numberOfNewBlocks} new blocks.");
-        }
-
-        $output->writeln('Finished fetching blocks');
+        $output->writeln("Got {$numberOfNewBlocks} new blocks.");
     }
 }

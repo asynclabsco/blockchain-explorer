@@ -7,6 +7,12 @@ services:
         ports:
             - 5432:5432
 
+#    adminer:
+#        image: adminer
+#        restart: always
+#        ports:
+#        - 8080:8080
+
     php:
         volumes:
             - ./docker/logs/symfony:/var/www/symfony/app/logs
@@ -19,3 +25,8 @@ services:
         volumes:
             - ./docker/logs/nginx/:/var/log/nginx:cached
             - .:/var/www/symfony:cached
+
+    ofelia:
+        volumes:
+            - ./config.ini:/etc/ofelia/config.ini
+            - /var/run/docker.sock:/var/run/docker.sock

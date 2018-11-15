@@ -110,16 +110,6 @@
                     {{ transaction.nonce }}
                 </div>
             </div>
-            <div class="c-transaction-page__info-item">
-                <div class="c-transaction-page__info-item-label">
-                    Input data
-                </div>
-                <div class="c-transaction-page__info-item-value">
-                    {# TODO decoded data#}
-                    {{ transaction.data }}
-                </div>
-            </div>
-
             {% if transaction.isContractCreationTransaction() %}
                 <div class="c-transaction-page__info-item">
                     <div class="c-transaction-page__info-item-label">
@@ -132,6 +122,16 @@
                     </div>
                 </div>
             {% endif %}
+
+            <div class="c-transaction-page__info-item">
+                <div class="c-transaction-page__info-item-label">
+                    Input data
+                </div>
+                <div class="c-transaction-page__info-item-value">
+                    {# TODO decoded data#}
+                    {{ transaction.data }}
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

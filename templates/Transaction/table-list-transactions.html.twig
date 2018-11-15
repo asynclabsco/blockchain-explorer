@@ -32,9 +32,13 @@
                     </a>
                 </td>
                 <td>
-                    <a href="{{ path('be.address.show_address', {address: transaction.to.address}) }}">
-                        {{ transaction.to.address|truncate(16) }}
-                    </a>
+                    {% if transaction.to.isNullAddress() %}
+                        Contract creation
+                    {% else %}
+                        <a href="{{ path('be.address.show_address', {address: transaction.to.address}) }}">
+                            {{ transaction.to.address|truncate(16) }}
+                        </a>
+                    {% endif %}
                 </td>
                 <td>{{ transaction.value|weiTransform('ether') }}</td>
                 <td>{{ transaction.gasPrice|weiTransform('Gwei') }}</td>

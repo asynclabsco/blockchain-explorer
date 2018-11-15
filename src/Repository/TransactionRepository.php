@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Address;
 use App\Entity\Block;
+use App\Entity\Contract;
 use App\Entity\Transaction;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -35,7 +36,7 @@ class TransactionRepository
 
         $qb->join('t.block', 'b');
 
-        $qb->orderBy('b.id', 'DESC');
+        $qb->orderBy('b.blockNumberDecimal', 'DESC');
         $qb->addOrderBy('t.index', 'DESC');
 
         $qb->setMaxResults($limit);
@@ -52,7 +53,7 @@ class TransactionRepository
         $qb->where('b = :block');
         $qb->setParameter('block', $block);
 
-        $qb->orderBy('b.id', 'DESC');
+        $qb->orderBy('b.blockNumberDecimal', 'DESC');
         $qb->addOrderBy('t.index', 'DESC');
 
         return $qb;
@@ -67,7 +68,7 @@ class TransactionRepository
         $qb->andWhere('t.from = :address OR t.to = :address');
         $qb->setParameter('address', $address);
 
-        $qb->orderBy('b.id', 'DESC');
+        $qb->orderBy('b.blockNumberDecimal', 'DESC');
         $qb->addOrderBy('t.index', 'DESC');
 
         return $qb;
@@ -84,7 +85,7 @@ class TransactionRepository
 
         $qb->join('t.block', 'b');
 
-        $qb->orderBy('b.id', 'DESC');
+        $qb->orderBy('b.blockNumberDecimal', 'DESC');
         $qb->addOrderBy('t.index', 'DESC');
 
         return $qb;
@@ -108,5 +109,16 @@ class TransactionRepository
         $qb->andWhere('t.status = true');
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function findTransactionsByContractQb(Contract $contract)
+    {
+        $qb = $this->findAllTransactionsQb();
+
+        $qb->andWhere('t.contractAddress = :contractAddress OR t.to = :contractAddress OR t.from = :contractAddress');
+
+        $qb->setParameter('contractAddress', $contract->getAddress());
+
+        return $qb;
     }
 }

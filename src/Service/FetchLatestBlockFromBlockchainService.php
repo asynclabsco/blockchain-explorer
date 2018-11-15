@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Block;
 use App\Enum\GethJsonRPCMethodsEnum;
+use App\Parameters\AppParameters;
 use App\Parser\NodeRequestBuilder;
 use App\Repository\BlockRepository;
 use Datto\JsonRpc\Client as JsonRpcClient;
@@ -11,8 +12,6 @@ use Datto\JsonRpc\Response;
 
 class FetchLatestBlockFromBlockchainService
 {
-    const NUMBER_OF_BLOCKS_PER_REQUEST = 50;
-
     /** @var BlockRepository */
     private $blockRepository;
 
@@ -25,14 +24,19 @@ class FetchLatestBlockFromBlockchainService
     /** @var BlockParser */
     private $blockParser;
 
+    /** @var AppParameters */
+    private $appParameters;
+
     public function __construct(
         BlockRepository $blockRepository,
         NodeRequestBuilder $nodeRequestBuilder,
-        BlockParser $blockParser
+        BlockParser $blockParser,
+        AppParameters $appParameters
     ) {
         $this->blockRepository = $blockRepository;
         $this->nodeRequestBuilder = $nodeRequestBuilder;
         $this->blockParser = $blockParser;
+        $this->appParameters = $appParameters;
         $this->jsonRpcClient = new JsonRpcClient;
     }
 
@@ -60,7 +64,7 @@ class FetchLatestBlockFromBlockchainService
         $latestBlock = $this->blockRepository->findLatestBlock();
 
         if (is_null($latestBlock)) {
-            return 0;
+            return $this->appParameters->getStartingBlockNumber();
         }
 
         $latestBlockNumberDec = NumberBaseConverter::toDec($latestBlock->getBlockNumber());
@@ -72,7 +76,7 @@ class FetchLatestBlockFromBlockchainService
     {
         $rawBlocksArray = [];
 
-        for ($i = 1; $i <= self::NUMBER_OF_BLOCKS_PER_REQUEST; $i++) {
+        for ($i = 1; $i <= $this->appParameters->getBlocksPerRequest(); $i++) {
             $this->jsonRpcClient->query($i, GethJsonRPCMethodsEnum::GET_BLOCK_BY_NUMBER,
                 [NumberBaseConverter::toHex($blockNumberDec + $i), true]);
         }

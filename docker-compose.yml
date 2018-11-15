@@ -5,7 +5,12 @@ services:
         image: postgres:11.0
 
     php:
+        # Important so we can reference it later
+        container_name: php
         build: docker/php
 
     nginx:
         build: docker/nginx
+
+    ofelia:
+        image: mcuadros/ofelia
