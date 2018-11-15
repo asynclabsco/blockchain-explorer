@@ -88,7 +88,7 @@ class Block
 
     /**
      * @var string
-     * @ORM\Column(type="string", nullable=false, name="block_number_decimal")
+     * @ORM\Column(type="decimal", precision=100, scale=0, nullable=false, name="block_number_decimal")
      */
     private $blockNumberDecimal;
 

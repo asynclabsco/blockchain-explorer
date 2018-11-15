@@ -3,12 +3,15 @@
 namespace App\Service;
 
 use App\Entity\Block;
+use App\Entity\Blockchain;
 use App\Enum\GethJsonRPCMethodsEnum;
 use App\Parameters\AppParameters;
 use App\Parser\NodeRequestBuilder;
+use App\Repository\BlockchainRepository;
 use App\Repository\BlockRepository;
 use Datto\JsonRpc\Client as JsonRpcClient;
 use Datto\JsonRpc\Response;
+use DomainException;
 
 class FetchLatestBlockFromBlockchainService
 {
@@ -27,16 +30,21 @@ class FetchLatestBlockFromBlockchainService
     /** @var AppParameters */
     private $appParameters;
 
+    /** @var BlockchainRepository */
+    private $blockchainRepository;
+
     public function __construct(
         BlockRepository $blockRepository,
         NodeRequestBuilder $nodeRequestBuilder,
         BlockParser $blockParser,
-        AppParameters $appParameters
+        AppParameters $appParameters,
+        BlockchainRepository $blockchainRepository
     ) {
         $this->blockRepository = $blockRepository;
         $this->nodeRequestBuilder = $nodeRequestBuilder;
         $this->blockParser = $blockParser;
         $this->appParameters = $appParameters;
+        $this->blockchainRepository = $blockchainRepository;
         $this->jsonRpcClient = new JsonRpcClient;
     }
 
@@ -47,14 +55,24 @@ class FetchLatestBlockFromBlockchainService
         $rawBlocksArray = $this->getRawBlocksData($blockNumberDec);
 
         $newBlocksCount = 0;
+
+        $blockchain = $this->blockchainRepository->getBlockchain();
+
         /** @var array $rawBlock */
         foreach ($rawBlocksArray as $rawBlock) {
             $newBlock = $this->blockParser->parseRawBlock($rawBlock);
 
-            if ($newBlock instanceof Block) {
-                $newBlocksCount++;
+            if (!($newBlock instanceof Block)) {
+                continue;
             }
+
+            $newBlocksCount++;
+            $blockchain->setIndexedBlockHeight($newBlock->getBlockNumberDecimal());
         }
+
+        $this->updateBlockchain($blockchain);
+
+        $this->blockchainRepository->save($blockchain);
 
         return $newBlocksCount;
     }
@@ -90,5 +108,26 @@ class FetchLatestBlockFromBlockchainService
         }
 
         return $rawBlocksArray;
+    }
+
+    private function updateBlockchain(Blockchain $blockchain)
+    {
+        $this->jsonRpcClient->query(1, GethJsonRPCMethodsEnum::GET_BLOCK_NUMBER, []);
+        $message = $this->jsonRpcClient->encode();
+
+        $responseArray = $this->nodeRequestBuilder->executeRequest($message);
+
+        if (!is_array($responseArray)) {
+            throw new DomainException('Response not received');
+        }
+
+        /** @var Response $blockNumberResponse */
+        $blockNumberResponse = $responseArray[0];
+
+        if (is_null($blockNumberResponse->getResult())) {
+            throw new DomainException('Block number height not received');
+        }
+
+        $blockchain->setBlockchainBlockHeight(NumberBaseConverter::toDec($blockNumberResponse->getResult()));
     }
 }

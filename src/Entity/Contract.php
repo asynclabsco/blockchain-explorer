@@ -24,6 +24,18 @@ class Contract
      */
     private $address;
 
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private $sourceCodeConfirmed = false;
+
+    /**
+     * @var null|string
+     * @ORM\Column(type="json_array", nullable=true)
+     */
+    private $abi;
+
     //     TODO Rest of attributes
 
     public function __construct(Address $address)
@@ -49,5 +61,25 @@ class Contract
     public function setAddress(Address $address)
     {
         $this->address = $address;
+    }
+
+    public function isSourceCodeConfirmed(): bool
+    {
+        return $this->sourceCodeConfirmed;
+    }
+
+    public function setSourceCodeConfirmed(bool $sourceCodeConfirmed)
+    {
+        $this->sourceCodeConfirmed = $sourceCodeConfirmed;
+    }
+
+    public function getAbi(): ?string
+    {
+        return $this->abi;
+    }
+
+    public function setAbi(?string $abi)
+    {
+        $this->abi = $abi;
     }
 }

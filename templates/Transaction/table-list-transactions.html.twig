@@ -2,6 +2,7 @@
     <table>
         <thead>
         <tr>
+            <th></th>
             <th>TxHash</th>
             <th>Block</th>
             <th>Age</th>
@@ -14,6 +15,10 @@
         <tbody>
         {% for transaction in transactions %}
             <tr>
+                <td>
+                    {{ transaction.isSuccessful() ? '✔' }}
+                    {{ transaction.isFailed() ? '❌' }}
+                </td>
                 <td>
                     <a href="{{ path('be.transaction.show_transaction', {id: transaction.txHash}) }}">
                         {{ transaction.txHash|truncate(16) }}

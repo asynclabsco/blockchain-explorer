@@ -7,4 +7,5 @@ class GethJsonRPCMethodsEnum
     const GET_TRANSACTION_RECEIPT = 'eth_getTransactionReceipt';
     const GET_BLOCK_BY_NUMBER = 'eth_getBlockByNumber';
     const GET_BALANCE = 'eth_getBalance';
+    const GET_BLOCK_NUMBER = 'eth_blockNumber';
 }
