@@ -11,12 +11,17 @@
         {% for contract in contracts %}
             <tr>
                 <td>
-                    {% if contract.hasErc20Token %}
+                    {% if contract.isErc20Token %}
                         {{ contract.erc20Token.name }}
                         ({{ contract.erc20Token.symbol }})
                         [ERC20]
                     {% endif %}
 
+                    {% if contract.isErc721Token %}
+                        {{ contract.erc721Token.name }}
+                        ({{ contract.erc721Token.symbol }})
+                        [ERC721]
+                    {% endif %}
                     {# TODO Token validation#}
                 </td>
                 <td>
