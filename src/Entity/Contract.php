@@ -2,7 +2,8 @@
 
 namespace App\Entity;
 
-use App\Entity\Model\ERC20TokenValidation;
+use App\Entity\Model\ERC20Token;
+use App\Entity\Model\ERC721Token;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,15 +27,28 @@ class Contract
     private $address;
 
     /**
-     * @var ERC20TokenValidation
-     * @ORM\OneToOne(targetEntity="App\Entity\Model\ERC20TokenValidation", cascade={"persist"})
+     * @var null|ERC20Token
+     * @ORM\OneToOne(targetEntity="App\Entity\Model\ERC20Token", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $erc20TokenValidation;
+    private $erc20Token;
+
+    /**
+     * @var null|ERC721Token
+     * @ORM\OneToOne(targetEntity="App\Entity\Model\ERC721Token", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $erc721Token;
+
+    /**
+     * @var null|string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $byteCode;
 
     public function __construct(Address $address)
     {
         $this->address = $address;
-        $this->erc20TokenValidation = new ERC20TokenValidation();
     }
 
     /**
@@ -42,7 +56,7 @@ class Contract
      */
     public function preFlush()
     {
-        $this->erc20TokenValidation = base64_encode(serialize($this->erc20TokenValidation));
+        $this->erc20Token = base64_encode(serialize($this->erc20Token));
     }
 
     /**
@@ -50,7 +64,7 @@ class Contract
      */
     public function preLoad()
     {
-        $this->erc20TokenValidation = unserialize(base64_decode($this->erc20TokenValidation));
+        $this->erc20Token = unserialize(base64_decode($this->erc20Token));
     }
 
     public function getId(): int
@@ -73,18 +87,53 @@ class Contract
         $this->address = $address;
     }
 
-    public function getErc20TokenValidation(): ERC20TokenValidation
+    public function getErc20Token(): ?ERC20Token
     {
-        return $this->erc20TokenValidation;
+        return $this->erc20Token;
     }
 
-    public function setErc20TokenValidation(ERC20TokenValidation $erc20TokenValidation)
+    public function setErc20Token(?ERC20Token $erc20Token)
     {
-        $this->erc20TokenValidation = $erc20TokenValidation;
+        $this->erc20Token = $erc20Token;
     }
 
     public function isErc20Token(): bool
     {
-        return $this->erc20TokenValidation->isERC20Token();
+        return $this->hasErc20Token() && !$this->hasErc721Token();
+    }
+
+    public function hasErc20Token()
+    {
+        return !is_null($this->erc20Token);
+    }
+
+    public function getErc721Token(): ?ERC721Token
+    {
+        return $this->erc721Token;
+    }
+
+    public function setErc721Token(?ERC721Token $erc721Token)
+    {
+        $this->erc721Token = $erc721Token;
+    }
+
+    public function isErc721Token(): bool
+    {
+        return !is_null($this->erc721Token);
+    }
+
+    public function hasErc721Token(): bool
+    {
+        return $this->isErc721Token();
+    }
+
+    public function getByteCode(): ?string
+    {
+        return $this->byteCode;
+    }
+
+    public function setByteCode(?string $byteCode)
+    {
+        $this->byteCode = $byteCode;
     }
 }

@@ -36,13 +36,17 @@ class FetchTransactionReceiptsService
     /** @var TokenDetectionService */
     private $tokenDetection;
 
+    /** @var FetchContractByteCodeService */
+    private $fetchContractByteCodeService;
+
     public function __construct(
         TransactionRepository $transactionRepository,
         NodeRequestBuilder $nodeRequestBuilder,
         AddressFinderService $addressFinderService,
         EventBus $eventBus,
         ContractRepository $contractRepository,
-        TokenDetectionService $tokenDetectionService
+        TokenDetectionService $tokenDetectionService,
+        FetchContractByteCodeService $fetchContractByteCodeService
     ) {
         $this->transactionRepository = $transactionRepository;
         $this->nodeRequestBuilder = $nodeRequestBuilder;
@@ -50,6 +54,7 @@ class FetchTransactionReceiptsService
         $this->eventBus = $eventBus;
         $this->contractRepository = $contractRepository;
         $this->tokenDetection = $tokenDetectionService;
+        $this->fetchContractByteCodeService = $fetchContractByteCodeService;
         $this->jsonRpcClient = new JsonRpcClient();
     }
 
@@ -141,6 +146,7 @@ class FetchTransactionReceiptsService
         $address->markSmartContract();
 
         $contract = new Contract($address);
+        $this->fetchContractByteCodeService->getContractByteCode($contract);
         $this->contractRepository->save($contract);
 
         $transaction->setContractAddress($address);

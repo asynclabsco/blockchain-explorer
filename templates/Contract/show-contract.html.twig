@@ -9,16 +9,17 @@
                     Token
                 </div>
                 <div class="c-show-contract-page__info-item-value">
-                    {{ contract.erc20TokenValidation.eRC20Token() ? 'ERC20' }}
+                    {{ contract.isErc20Token() ? 'ERC20' }}
+                    {{ contract.isErc721Token() ? 'ERC721' }}
                 </div>
             </div>
-            {% if contract.erc20TokenValidation.eRC20Token() %}
+            {% if contract.isErc20Token() %}
                 <div class="c-show-contract-page__info-item">
                     <div class="c-show-contract-page__info-item-label">
                         Name
                     </div>
                     <div class="c-show-contract-page__info-item-value">
-                        {{ contract.erc20TokenValidation.name }}
+                        {{ contract.erc20Token.name }}
                     </div>
                 </div>
                 <div class="c-show-contract-page__info-item">
@@ -26,7 +27,7 @@
                         Symbol
                     </div>
                     <div class="c-show-contract-page__info-item-value">
-                        {{ contract.erc20TokenValidation.symbol }}
+                        {{ contract.erc20Token.symbol }}
                     </div>
                 </div>
                 <div class="c-show-contract-page__info-item">
@@ -34,7 +35,34 @@
                         Total supply
                     </div>
                     <div class="c-show-contract-page__info-item-value">
-                        {{ contract.erc20TokenValidation.totalSupply }}
+                        {{ contract.erc20Token.totalSupply }}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if contract.isErc721Token() %}
+                <div class="c-show-contract-page__info-item">
+                    <div class="c-show-contract-page__info-item-label">
+                        Name
+                    </div>
+                    <div class="c-show-contract-page__info-item-value">
+                        {{ contract.erc721Token.name }}
+                    </div>
+                </div>
+                <div class="c-show-contract-page__info-item">
+                    <div class="c-show-contract-page__info-item-label">
+                        Symbol
+                    </div>
+                    <div class="c-show-contract-page__info-item-value">
+                        {{ contract.erc721Token.symbol }}
+                    </div>
+                </div>
+                <div class="c-show-contract-page__info-item">
+                    <div class="c-show-contract-page__info-item-label">
+                        Total supply
+                    </div>
+                    <div class="c-show-contract-page__info-item-value">
+                        {{ contract.erc721Token.totalSupply }}
                     </div>
                 </div>
             {% endif %}
@@ -46,6 +74,14 @@
                     </a>
                 </div>
             </div>
+            {#<div class="c-show-contract-page__info-item">#}
+                {#<div class="c-show-contract-page__info-item-label">#}
+                    {#Bytecode#}
+                {#</div>#}
+                {#<div class="c-show-contract-page__info-item-value">#}
+                    {#{{ contract.byteCode }}#}
+                {#</div>#}
+            {#</div>#}
         </div>
 
         <div class="c-show-contract-page__transactions">

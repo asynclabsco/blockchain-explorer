@@ -11,4 +11,5 @@ class GethJsonRPCMethodsEnum
     const GET_LOGS = 'eth_getLogs';
     const GET_WEB3_SHA3 = 'web3_sha3';
     const ETH_CALL_CONTRACT = 'eth_call';
+    const GET_CODE = 'eth_getCode';
 }

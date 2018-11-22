@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Enum\ERC721MethodHashes;
 use App\Repository\BlockRepository;
 use App\Repository\TransactionRepository;
 use Symfony\Component\HttpFoundation\Response;

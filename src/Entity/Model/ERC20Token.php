@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity()
  */
-class ERC20TokenValidation
+class ERC20Token
 {
     /**
      * @var integer
@@ -55,6 +55,23 @@ class ERC20TokenValidation
      */
     private $decimals;
 
+    /**
+     * @var array
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $foundInterfaceMethods;
+
+    /**
+     * @var array
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $notFoundInterfaceMethods;
+
+    public function __construct(Contract $contract)
+    {
+        $this->contract = $contract;
+    }
+
     public function getId(): int
     {
         return $this->id;
@@ -83,11 +100,6 @@ class ERC20TokenValidation
     public function setTransferEventExists(bool $transferEventExists)
     {
         $this->transferEventExists = $transferEventExists;
-    }
-
-    public function isERC20Token()
-    {
-        return $this->isTransferEventExists() || ($this->hasName() && $this->hasSymbol() && $this->hasDecimals()) || $this->hasTotalSupply();
     }
 
     public function getName(): ?string
@@ -148,5 +160,30 @@ class ERC20TokenValidation
     public function hasDecimals(): bool
     {
         return !is_null($this->decimals);
+    }
+
+    public function isERC20Token()
+    {
+        return $this->isTransferEventExists() || count($this->foundInterfaceMethods) > count($this->notFoundInterfaceMethods);
+    }
+
+    public function getFoundInterfaceMethods(): array
+    {
+        return $this->foundInterfaceMethods;
+    }
+
+    public function setFoundInterfaceMethods(array $foundInterfaceMethods)
+    {
+        $this->foundInterfaceMethods = $foundInterfaceMethods;
+    }
+
+    public function getNotFoundInterfaceMethods(): array
+    {
+        return $this->notFoundInterfaceMethods;
+    }
+
+    public function setNotFoundInterfaceMethods(array $notFoundInterfaceMethods)
+    {
+        $this->notFoundInterfaceMethods = $notFoundInterfaceMethods;
     }
 }

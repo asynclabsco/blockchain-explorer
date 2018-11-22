@@ -3,8 +3,8 @@
 namespace App\Service\TokenDetection;
 
 use App\Entity\Contract;
-use App\Entity\Model\ERC20Token;
-use App\Enum\ERC20MethodHashes;
+use App\Entity\Model\ERC721Token;
+use App\Enum\ERC721MethodHashes;
 use App\Enum\ERCTokensEventHashes;
 use App\Enum\GethJsonRPCMethodsEnum;
 use App\Parser\NodeRequestBuilder;
@@ -13,7 +13,7 @@ use App\Service\NumberBaseConverter;
 use Datto\JsonRpc\Client as JsonRpcClient;
 use Datto\JsonRpc\Response;
 
-class ERC20TokenDetectionService
+class ERC721TokenDetectionService
 {
     /** @var NodeRequestBuilder */
     private $nodeRequestBuilder;
@@ -31,22 +31,22 @@ class ERC20TokenDetectionService
         $this->jsonRpcClient = new JsonRpcClient();
     }
 
-    public function detectIsERC20Token(Contract $contract)
+    public function detectIsERC721Token(Contract $contract)
     {
-        $erc20Token = $contract->getErc20Token();
+        $erc721Token = $contract->getErc721Token();
 
-        if (is_null($erc20Token)) {
-            $erc20Token = new ERC20Token($contract);
+        if (is_null($erc721Token)) {
+            $erc721Token = new ERC721Token($contract);
         }
 
         $transferEventExists = $this->checkDoTransferEventsExist($contract);
-        $erc20Token->setTransferEventExists($transferEventExists);
+        $erc721Token->setTransferEventExists($transferEventExists);
 
-        $this->getERC20TokenInformation($erc20Token);
-        $this->checkDoInterfaceMethodsExist($erc20Token);
+        $this->getERC721TokenInformation($erc721Token);
+        $this->checkDoInterfaceMethodsExist($erc721Token);
 
-        if ($erc20Token->isERC20Token()) {
-            $contract->setErc20Token($erc20Token);
+        if ($erc721Token->isErc721Token()) {
+            $contract->setErc721Token($erc721Token);
         }
 
         $this->contractRepository->save($contract);
@@ -57,7 +57,7 @@ class ERC20TokenDetectionService
         $this->jsonRpcClient->query(1, GethJsonRPCMethodsEnum::GET_LOGS, [
             [
                 'fromBlock' => NumberBaseConverter::toHex(0),
-                'topics'    => [ERCTokensEventHashes::ERC20_TRANSFER],
+                'topics'    => [ERCTokensEventHashes::ERC721_TRANSFER],
                 'address'   => $contract->getAddress()->getAddress(),
             ],
         ]);
@@ -81,14 +81,13 @@ class ERC20TokenDetectionService
         return true;
     }
 
-    private function getERC20TokenInformation(ERC20Token $token)
+    private function getERC721TokenInformation(ERC721Token $token)
     {
         $contract = $token->getContract();
 
-        $this->createAdditionalInformationRequest($contract, ERC20MethodHashes::GET_NAME);
-        $this->createAdditionalInformationRequest($contract, ERC20MethodHashes::GET_SYMBOL);
-        $this->createAdditionalInformationRequest($contract, ERC20MethodHashes::GET_TOTAL_SUPPLY);
-        $this->createAdditionalInformationRequest($contract, ERC20MethodHashes::GET_DECIMALS);
+        $this->createAdditionalInformationRequest($contract, ERC721MethodHashes::GET_NAME);
+        $this->createAdditionalInformationRequest($contract, ERC721MethodHashes::GET_SYMBOL);
+        $this->createAdditionalInformationRequest($contract, ERC721MethodHashes::GET_TOTAL_SUPPLY);
 
         $message = $this->jsonRpcClient->encode();
 
@@ -105,19 +104,15 @@ class ERC20TokenDetectionService
             }
 
             switch ($response->getId()) {
-                case ERC20MethodHashes::GET_NAME:
+                case ERC721MethodHashes::GET_NAME:
                     $name = $this->parseHexToAscii($response->getResult());
                     $token->setName($name);
                     break;
-                case ERC20MethodHashes::GET_DECIMALS:
-                    $decimals = NumberBaseConverter::toDec($response->getResult());
-                    $token->setDecimals($decimals);
-                    break;
-                case ERC20MethodHashes::GET_TOTAL_SUPPLY:
+                case ERC721MethodHashes::GET_TOTAL_SUPPLY:
                     $totalSupply = NumberBaseConverter::toDec($response->getResult());
                     $token->setTotalSupply($totalSupply);
                     break;
-                case ERC20MethodHashes::GET_SYMBOL:
+                case ERC721MethodHashes::GET_SYMBOL:
                     $symbol = $this->parseHexToAscii($response->getResult());
                     $token->setSymbol($symbol);
                     break;
@@ -147,12 +142,11 @@ class ERC20TokenDetectionService
         return trim($value);
     }
 
-    private function checkDoInterfaceMethodsExist(ERC20Token $erc20Token)
+    private function checkDoInterfaceMethodsExist(ERC721Token $erc721Token)
     {
+        $byteCode = $erc721Token->getContract()->getByteCode();
 
-        $byteCode = $erc20Token->getContract()->getByteCode();
-
-        $constants = ERC20MethodHashes::getConstants();
+        $constants = ERC721MethodHashes::getConstants();
 
         $foundMethods = [];
         $notFoundMethods = [];
@@ -163,7 +157,7 @@ class ERC20TokenDetectionService
             $position === false ? $notFoundMethods[] = $name : $foundMethods[] = $name;
         }
 
-        $erc20Token->setFoundInterfaceMethods($foundMethods);
-        $erc20Token->setNotFoundInterfaceMethods($notFoundMethods);
+        $erc721Token->setFoundInterfaceMethods($foundMethods);
+        $erc721Token->setNotFoundInterfaceMethods($notFoundMethods);
     }
 }
