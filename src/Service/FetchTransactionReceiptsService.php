@@ -9,6 +9,7 @@ use App\Event\TransactionReceiptReceivedEvent;
 use App\Parser\NodeRequestBuilder;
 use App\Repository\ContractRepository;
 use App\Repository\TransactionRepository;
+use App\Service\TokenDetection\TokenDetectionService;
 use Datto\JsonRpc\Client as JsonRpcClient;
 use Datto\JsonRpc\Response;
 
@@ -32,18 +33,23 @@ class FetchTransactionReceiptsService
     /** @var ContractRepository */
     private $contractRepository;
 
+    /** @var TokenDetectionService */
+    private $tokenDetection;
+
     public function __construct(
         TransactionRepository $transactionRepository,
         NodeRequestBuilder $nodeRequestBuilder,
         AddressFinderService $addressFinderService,
         EventBus $eventBus,
-        ContractRepository $contractRepository
+        ContractRepository $contractRepository,
+        TokenDetectionService $tokenDetectionService
     ) {
         $this->transactionRepository = $transactionRepository;
         $this->nodeRequestBuilder = $nodeRequestBuilder;
         $this->addressFinderService = $addressFinderService;
         $this->eventBus = $eventBus;
         $this->contractRepository = $contractRepository;
+        $this->tokenDetection = $tokenDetectionService;
         $this->jsonRpcClient = new JsonRpcClient();
     }
 
@@ -138,6 +144,8 @@ class FetchTransactionReceiptsService
         $this->contractRepository->save($contract);
 
         $transaction->setContractAddress($address);
+
+        $this->tokenDetection->detectTokens($contract);
     }
 
     private function handleSuccesfulTransaction(Transaction $transaction)

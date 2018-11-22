@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Model\ERC20TokenValidation;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,22 +26,31 @@ class Contract
     private $address;
 
     /**
-     * @var bool
-     * @ORM\Column(type="boolean", nullable=false)
+     * @var ERC20TokenValidation
+     * @ORM\OneToOne(targetEntity="App\Entity\Model\ERC20TokenValidation", cascade={"persist"})
      */
-    private $sourceCodeConfirmed = false;
-
-    /**
-     * @var null|string
-     * @ORM\Column(type="json_array", nullable=true)
-     */
-    private $abi;
-
-    //     TODO Rest of attributes
+    private $erc20TokenValidation;
 
     public function __construct(Address $address)
     {
         $this->address = $address;
+        $this->erc20TokenValidation = new ERC20TokenValidation();
+    }
+
+    /**
+     * @ORM\PreFlush()
+     */
+    public function preFlush()
+    {
+        $this->erc20TokenValidation = base64_encode(serialize($this->erc20TokenValidation));
+    }
+
+    /**
+     * @ORM\PostLoad()
+     */
+    public function preLoad()
+    {
+        $this->erc20TokenValidation = unserialize(base64_decode($this->erc20TokenValidation));
     }
 
     public function getId(): int
@@ -63,23 +73,18 @@ class Contract
         $this->address = $address;
     }
 
-    public function isSourceCodeConfirmed(): bool
+    public function getErc20TokenValidation(): ERC20TokenValidation
     {
-        return $this->sourceCodeConfirmed;
+        return $this->erc20TokenValidation;
     }
 
-    public function setSourceCodeConfirmed(bool $sourceCodeConfirmed)
+    public function setErc20TokenValidation(ERC20TokenValidation $erc20TokenValidation)
     {
-        $this->sourceCodeConfirmed = $sourceCodeConfirmed;
+        $this->erc20TokenValidation = $erc20TokenValidation;
     }
 
-    public function getAbi(): ?string
+    public function isErc20Token(): bool
     {
-        return $this->abi;
-    }
-
-    public function setAbi(?string $abi)
-    {
-        $this->abi = $abi;
+        return $this->erc20TokenValidation->isERC20Token();
     }
 }

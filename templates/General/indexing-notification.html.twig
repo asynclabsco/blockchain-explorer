@@ -1,0 +1,5 @@
+{% if blockchain.isNotIndexed() %}
+    <div class="c-indexing-notification">
+        Indexing is still in progress. {{ blockchain.percentageIndexed ~ '%' }} of Blockchain is currently indexed.
+    </div>
+{% endif %}

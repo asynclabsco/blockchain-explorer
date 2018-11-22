@@ -13,8 +13,10 @@
 @import "General/pagination";
 @import "Components/block";
 @import "Components/transaction";
+@import "Components/indexing-notification";
 // Pages
 @import "LandingPage/_landing-page";
 @import "Block/block-page";
 @import "Block/all-blocks-page";
 @import "Transaction/transaction-page";
+@import "Contract/show-contract-page";

@@ -3,8 +3,50 @@
 {% block body %}
     <div class="c-show-contract-page">
         <h1>Contract</h1>
-        {# TODO #}
-        <h5>TODO</h5>
+        <div class="c-show-contract-page__info">
+            <div class="c-show-contract-page__info-item">
+                <div class="c-show-contract-page__info-item-label">
+                    Token
+                </div>
+                <div class="c-show-contract-page__info-item-value">
+                    {{ contract.erc20TokenValidation.eRC20Token() ? 'ERC20' }}
+                </div>
+            </div>
+            {% if contract.erc20TokenValidation.eRC20Token() %}
+                <div class="c-show-contract-page__info-item">
+                    <div class="c-show-contract-page__info-item-label">
+                        Name
+                    </div>
+                    <div class="c-show-contract-page__info-item-value">
+                        {{ contract.erc20TokenValidation.name }}
+                    </div>
+                </div>
+                <div class="c-show-contract-page__info-item">
+                    <div class="c-show-contract-page__info-item-label">
+                        Symbol
+                    </div>
+                    <div class="c-show-contract-page__info-item-value">
+                        {{ contract.erc20TokenValidation.symbol }}
+                    </div>
+                </div>
+                <div class="c-show-contract-page__info-item">
+                    <div class="c-show-contract-page__info-item-label">
+                        Total supply
+                    </div>
+                    <div class="c-show-contract-page__info-item-value">
+                        {{ contract.erc20TokenValidation.totalSupply }}
+                    </div>
+                </div>
+            {% endif %}
+            <div class="c-show-contract-page__info-item">
+                <div class="c-show-contract-page__info-item-label"></div>
+                <div class="c-show-contract-page__info-item-value">
+                    <a href="{{ path('be.contracts.detect_tokens', {address: contract.address.address}) }}">
+                        Detect Tokens
+                    </a>
+                </div>
+            </div>
+        </div>
 
         <div class="c-show-contract-page__transactions">
             <h3>Transactions</h3>

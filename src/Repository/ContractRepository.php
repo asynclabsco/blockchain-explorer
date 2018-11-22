@@ -23,6 +23,7 @@ class ContractRepository
 
     public function save(Contract $contract)
     {
+        $this->em->persist($contract->getErc20TokenValidation());
         $this->em->persist($contract);
         $this->em->flush();
     }

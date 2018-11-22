@@ -58,4 +58,25 @@ class Blockchain
     {
         $this->indexedBlockHeight = $indexedBlockHeight;
     }
+
+    public function getPercentageIndexed(): string
+    {
+        $percentageIndexed = 0;
+
+        if ($this->blockchainBlockHeight > 0) {
+            $percentageIndexed = ($this->indexedBlockHeight / $this->blockchainBlockHeight) * 100;
+        }
+
+        return number_format($percentageIndexed, 2, ',', '');
+    }
+
+    public function isIndexed(): bool
+    {
+        return $this->blockchainBlockHeight === $this->indexedBlockHeight;
+    }
+
+    public function isNotIndexed(): bool
+    {
+        return !$this->isIndexed();
+    }
 }

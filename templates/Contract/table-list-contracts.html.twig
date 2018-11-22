@@ -2,24 +2,29 @@
     <table>
         <thead>
         <tr>
+            <th>Token</th>
             <th>Address</th>
             <th>Balance</th>
-            <th>ERC20</th>
-            <th>ERC721</th>
         </tr>
         </thead>
         <tbody>
         {% for contract in contracts %}
             <tr>
-                {# TOOD link#}
+                <td>
+                    {% if contract.erc20TokenValidation.eRC20Token %}
+                        {{ contract.erc20TokenValidation.name }}
+                        ({{ contract.erc20TokenValidation.symbol }})
+                        [ERC20]
+                    {% endif %}
+
+                    {# TODO Token validation#}
+                </td>
                 <td>
                     <a href="{{ path('be.contracts.show_contract', {address: contract.address.address}) }}">
                         {{ contract.address.address }}
                     </a>
                 </td>
                 <td>{{ contract.address.ethereumBalance|weiTransform('ether') }}</td>
-                <td>{# TODO #}</td>
-                <td>{# TODO #}</td>
             </tr>
         {% endfor %}
         </tbody>
