@@ -19,23 +19,18 @@ class AppParameters
     /** @var integer */
     private $startingBlockNumber;
 
-    /** @var integer */
-    private $timeoutBetweenRequests;
-
     public function __construct(
         string $nodeRpcUrl,
         string $title,
         string $consensusProtocol,
         int $blocksPerRequest,
-        int $startingBlockNumber,
-        int $timeoutBetweenRequests
+        int $startingBlockNumber
     ) {
         $this->nodeRpcUrl = $nodeRpcUrl;
         $this->title = $title;
         $this->consensusProtocol = $consensusProtocol;
         $this->blocksPerRequest = $blocksPerRequest;
         $this->startingBlockNumber = $startingBlockNumber;
-        $this->timeoutBetweenRequests = $timeoutBetweenRequests;
     }
 
     public function getNodeRpcUrl(): string
@@ -61,10 +56,5 @@ class AppParameters
     public function getStartingBlockNumber(): int
     {
         return $this->startingBlockNumber;
-    }
-
-    public function getTimeoutBetweenRequests(): int
-    {
-        return $this->timeoutBetweenRequests;
     }
 }
