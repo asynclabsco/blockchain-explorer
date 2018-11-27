@@ -51,7 +51,7 @@ cp docker-compose.override.yml.dist docker-compose.override.yml
 bash -c "docker-compose kill"
 bash -c "docker-compose up -d --build --force-recreate"
 bash -c "docker-compose exec php bash -c 'composer install --optimize-autoloader'"
-bash -c "docker-compose exec php bash -c 'php bin/console doctrine:database:drop --force'"
+bash -c "docker-compose exec php bash -c 'php bin/console doctrine:database:drop --force --if-exists'"
 bash -c "docker-compose exec php bash -c 'php bin/console doctrine:database:create'"
 bash -c "docker-compose exec php bash -c 'php bin/console doctrine:schema:update --force'"
 bash -c "docker-compose exec php bash -c 'php bin/console blockchain:fetch:blocks'"
