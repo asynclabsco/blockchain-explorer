@@ -6,7 +6,7 @@ services:
 
     php:
         # Important so we can reference it later
-        container_name: php
+        container_name: php_blockchain_explorer
         build: docker/php
 
     nginx:

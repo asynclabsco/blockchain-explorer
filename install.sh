@@ -48,7 +48,8 @@ echo APP_BLOCKS_PER_REQUEST=50 >> .env
 ########################
 # Copy docker-compose override
 cp docker-compose.override.yml.dist docker-compose.override.yml
-bash -c "docker rm -f $(docker ps -a -q)"
+bash -c "docker kill $(docker ps -q)"
+#bash -c "docker down $(docker ps -q)"
 bash -c "docker-compose up -d --build --force-recreate"
 bash -c "docker-compose exec php bash -c 'composer install --optimize-autoloader'"
 bash -c "docker-compose exec php bash -c 'php bin/console doctrine:database:drop --force --if-exists'"
