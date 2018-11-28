@@ -2,6 +2,7 @@ version: "3"
 
 services:
     db:
+        container_name: db_blockchain_explorer
         image: postgres:11.0
 
     php:
@@ -10,7 +11,9 @@ services:
         build: docker/php
 
     nginx:
+        container_name: nginx_blockchain_explorer
         build: docker/nginx
 
     ofelia:
+        container_name: ofelia_blockchain_explorer
         image: mcuadros/ofelia
