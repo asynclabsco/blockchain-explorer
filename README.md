@@ -46,12 +46,24 @@ After you've setup project with install script, that's it. If you have any probl
 ## Features
 
 What's all the bells and whistles this project can perform?
-* What's the main functionality
-* You can also do another thing
-* If you get really randy, you can even do this
+* Show mined blocks
+* Show transactions from mined blocks
+* Add addresses to database and see their ETH balance
+* SmartContract viewer
+* Recognize ERC20 and ERC721 tokens from Contracts
+
+
+### Todo
+- [ ] Search
+- [ ] Improved ERC tokens recognition (and better tested)
+- [ ] View balances of ERC20 tokens for user
+- [ ] In general better display of ERC tokens
+- [ ] Tests in general
 
 ## Contributing
 Feel free to fork and submit pull requests back to this repository. :)
 
 ## Licensing
 MIT license.
+
+
